@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>登陆页面</title>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC_ADMIN__/libarary/Bootstrap3.3.7/css/bootstrap.min.css">
+    <script src="__PUBLIC_ADMIN__/js/jquery-3.1.0.min.js"></script>
+    <script src="__PUBLIC_ADMIN__/libarary/Bootstrap3.3.7/js/bootstrap.min.js"></script>
+    <style type="text/css" media="screen">
+        form{
+            width: 800px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <form action="index_submit" method="post" accept-charset="utf-8">
+        <div class="form-group">
+            <label for="">用户名</label>
+            <input class="form-control" type="text" name="user_name"></input>
+        </div>
+        <div class="form-group">
+            <label for="">密码</label>
+            <input class="form-control" type="password" name="user_pwd"></input>
+        </div>
+        <div class="form-group">
+            <label for="">验证码</label>
+            <input class="form-control" type="text" name="user_captcha"></input>
+            <img src="{:captcha_src()}" alt="" onclick="change_captcha(this)">
+        </div>
+        <button type="submit" class="btn btn-default">登陆</button>
+    </form>
+</body>
+<script type="text/javascript">
+    // 验证码改变
+    function change_captcha (this_elm) {
+        $(this_elm).attr('src', '{:captcha_src()}?' + Math.random());
+    }
+    // 提交表单
+    $('button[type=submit]').click(function (e) {
+        event.preventDefault();
+        $.ajax({
+            url: "/check_verify",
+            data:{code:$('input[name=user_captcha]')},
+            type:'post',
+            success:function () {
+                console.log(123);
+            }
+        });
+    });
+</script>
+</html>
