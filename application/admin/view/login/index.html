@@ -40,11 +40,11 @@
     $('button[type=submit]').click(function (e) {
         event.preventDefault();
         $.ajax({
-            url: "/check_verify",
-            data:{code:$('input[name=user_captcha]')},
+            url: "{:url('check_verify')}",
+            data:{code:$('input[name=user_captcha]').val()},
             type:'post',
-            success:function () {
-                console.log(123);
+            success:function (rtnData) {
+                console.log(rtnData);
             }
         });
     });

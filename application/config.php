@@ -212,7 +212,7 @@ return [
         'auto_start'     => true,
     ],
     'view_replace_str'      =>[
-        '__PUBLIC_ADMIN__' =>'/20170718/lesson9/tp5/public/static/admin'
+        '__PUBLIC_ADMIN__' =>'/20170718/tp5/public/static/admin'
     ],
 
     // +----------------------------------------------------------------------
