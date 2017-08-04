@@ -13,7 +13,7 @@ class Login extends Controller
     }
 
     public function check_verify(){
-        echo 1;
+        return input('code');
     }
 }
  ?>
