@@ -5,5 +5,5 @@ use think\Model;
 
 class Weibo extends Model
 {
-
+    protected $table = 'weibo_detail';
 }

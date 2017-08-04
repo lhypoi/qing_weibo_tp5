@@ -1,7 +1,9 @@
 <?php
 namespace app\whome\controller;
 
-class Weibo
+use think\Controller;
+
+class Weibo extends Controller
 {
 
 }
