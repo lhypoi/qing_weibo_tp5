@@ -2,6 +2,7 @@
 namespace app\whome\controller;
 use think\Session;
 use think\Controller;
+use think\Request;
 
 class User extends Controller
 {
@@ -97,18 +98,26 @@ class User extends Controller
     {
         $create_time = time();
         $uid = input('uid');
-        $user_pic = "__PUBLIC__/img/user/".Session::get("info")['id'].'_'.$create_time.".jpg";
-        move_uploaded_file($_FILES['user_pic']['tmp_name'], $user_pic);
-    
-        $result = model("user")
-                ->update("user_pic", "id=$uid");
-    
-        if ($result == 1) {
-            returnjson(1, "更换头像成功");
+        $user_pic = "/public/static/img/user/".$uid.'_'.$create_time.".jpg";
+        $file = Request()->file("user_pic");
+        $info = $file->validate(["ext"=>"jpg,png"])->move("static/img/user/", $uid.'_'.$create_time.".jpg");
+        if($info) {
+            $result = model("user")
+                    ->where("id=$uid")
+                    ->setField("user_pic", $user_pic);
+            if ($result == 1) {
+                Session::set("info.user_pic", $user_pic);
+                return [
+                    "status" => 1,
+                    "msg" => "更换头像成功"
+                ];
+            }
+        }else{
             return [
-                "status" => 1,
-                "msg" => "更换头像成功"
+                "status"=>0,
+                "msg"=>$file->getError()
             ];
         }
+
     }
 }

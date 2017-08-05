@@ -47,7 +47,7 @@ window.user = {
 	        success: function(data) {
 	            if (data['status'] == 1) {
 	                localStorage.removeItem('uid');
-	                location.href= "/public";
+	                location.reload();
 	            }
 	        }
 	    });
