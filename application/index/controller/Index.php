@@ -8,3 +8,5 @@ class Index
         return 'hello world';
     }
 }
+
+?>

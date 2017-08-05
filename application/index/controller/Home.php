@@ -1,6 +1,8 @@
 <?php
 namespace app\index\controller;
+
 use think\captcha\Captcha;
+
 class Home
 {
     public function index()
