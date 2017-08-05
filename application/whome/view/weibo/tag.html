@@ -1,0 +1,141 @@
+{include file='public/head'}
+<div class="weibo_list">
+    <div class="row">
+        <div class="col-lg-9">
+            <ul class="weibo_box">
+                {foreach $weibo_data as $key=>$item}
+                <li weibo-id="{$item.id}" class="animated slideInDown list_{$item.id}">
+                    <div class="row clearfix">
+                        <div class="col-lg-2 head_box" style="text-align: center;">
+                            <img src="{$item.user_data.user_pic|hasPhoto}" alt="" data-id="{$item.user_id}" class="w_img">
+                            <p>{$item.user_data.user_nickname}</p>
+                            <div class="info-box">
+                                <div class="arrow-left"></div>
+                                <a  class="author-name">{$item.user_data.user_nickname}的最近微博</a>
+
+                                <ul class="road_list">
+                                </ul>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-10 content_box">
+                            <div class="triangle_border_ne"></div>
+                            <div class="content">
+                                {if $item.type == 'short_content'}
+                                {$item.weibo_content}
+                                {elseif $item.type == 'pic_text'}
+                                <img src="{$item.pic}" alt="" class="w-img">
+                                {$item.weibo_content}
+                                {elseif $item.type == 'music'}
+                                <audio src="{$item.music}" controls></audio>
+                                {elseif $item.type == 'vedio'}
+                                <video src="{$item.video}" controls></video>
+                                {elseif $item.type == 'long_content'}
+                                {$item.weibo_content}
+                                {/if}
+                            </div>
+                            <div class="w-opt clearfix">
+                                <div class="optb pull-left">
+                                    {foreach $item.tag_data.tagid_arr as $key2=>$item2}
+                                    <div class="tags_box">
+                                        <div class="tag_info_box">
+                                            <ul class="road_tag clearfix">
+                                                <li>
+                                                    <a href="#" class="tag_content">标签微博</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" class="tag_content">标签微博</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" class="tag_content">标签微博</a>
+                                                </li>
+                                            </ul>
+                                            <div class="arrow_down"></div>
+                                        </div>
+                                        <a data-id = "{$item2}" class="tag" href="index.php?control=tag&action=info&id={$item2}">#{$item.tag_data.tagname_arr[$key2]}&nbsp;</a>
+                                    </div>
+                                    {/foreach}
+                                </div>
+                                <div class="optb pull-right">
+                                    <span style="color: #55a4a9;">{date('Y-m-d H:i:s', $item.create_time)}</span>
+                                    {if $item.user_data.id == $smarty.session.uid}
+                                    <a href="#modal-del" data-toggle="modal" class="delete_weibo" id="{$item.id}">删除</a>
+                                    {/if}
+                                    {if $item.user_data.id == $smarty.session.uid}
+                                    <a href="#edit_weibo_modal" class="edit_weibo" data-toggle="modal">编辑</a>
+                                    {/if}
+                                    <a href="" class="commet_btn" data-num="{$item.id}">评论({$item.commet_data})</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row comment_row">
+                            <div class="col-lg-10 col-lg-offset-2 commont_box">
+                                <div class="row commet">
+                                    <div class="col-lg-10">
+                                        <input type="text" name="commet_content" class="form-control">
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <input type="button" class="btn btn-info commet_send" value="发布">
+                                    </div>
+                                </div>
+                                <ul class="commont_list">
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                {/foreach}
+            </ul>
+            <div class="modal fade" id="edit_weibo_modal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">编辑微博</div>
+                        <div class="modal-body">
+                            <textarea class="form-control" rows="2"></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button class="btn btn-info" onclick="do_edit_weibo()">确定</button>
+                            <input type="hidden" name="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 删除微博 -->
+            <div class="modal" id="modal-del">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">删除信息</div>
+                        <div class="modal-body">确定删除这条信息吗？</div>
+                        <div class="modal-footer">
+                            <input type="hidden" id="record-num" value="">
+                            <button class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button class="btn btn-primary" data-dismiss="modal" id="record-del-confirm">确定</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 删除评论 -->
+            <div class="modal" id="modal_comment">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">删除评论</div>
+                        <div class="modal-body">确定删除这条评论吗？</div>
+                        <div class="modal-footer">
+                            <input type="hidden" value="" id="comment-del-num" />
+                            <button class="btn btn-default" data-dismiss="modal" id="comment-del-cancel">取消</button>
+                            <button class="btn btn-primary" data-dismiss="modal" id="comment-del-confirm">确定</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            广告
+        </div>
+    </div>
+    <div id="page-mark" data-page="tag"></div>
+    <script type="text/javascript" src="./public/js/load.js"></script>
+</div>
+{include file='public/foot'}
