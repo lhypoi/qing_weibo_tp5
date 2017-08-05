@@ -5,5 +5,9 @@ use think\Model;
 
 class Weibo extends Model
 {
-    protected $table = 'weibo_detail';
+    protected $table = "weibo_detail";
+    
+    public function commont() {
+        return $this->hasMany("commet", "weibo_id");
+    }
 }
