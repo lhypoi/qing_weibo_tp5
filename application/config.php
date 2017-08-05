@@ -214,7 +214,7 @@ return [
     'view_replace_str'      =>[
         '__PUBLIC_ADMIN__' =>'/public/static/admin',
         '__PUBLIC_WHOME__' =>'/public/static/whome',
-        '__PUBLIC__' =>'/public/static/admin'
+        '__PUBLIC__' =>'/public/static'
     ],
     // +----------------------------------------------------------------------
     // | Cookie设置
