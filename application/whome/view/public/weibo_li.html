@@ -1,16 +1,16 @@
-﻿{foreach from=$weibo_data item=$item key=$key}
+{foreach $weibo_data as $item}
 <li weibo-id="{$item.id}" class="animated slideInDown list_{$item.id}">
     <div class="row clearfix">
         <div class="col-lg-2 head_box" style="text-align: center;">
-            <img src="{$item.user_data.user_pic|default:'./public/img/default.png'}" alt="" data-id="{$item.user_id}" class="img-rounded w_img">
-            <p>{$item.user_data.user_nickname}</p>
-            <!-- 会员身份显示 -->
+            <img src="{$item.user_pic|hasPhoto}" alt="" data-id="{$item.user_id}" class="img-rounded w_img">
+            <p>{$item.user_nickname}</p>
+            <!-- 会员身份显示  -->
             <div class="user_degree">
-                普通用户<img src="./public/img/ud_img1.png">
+            	普通用户<img src="__PUBLIC__/img/ud_img1.png">
             </div>
             <div class="info-box">
                 <div class="arrow-left"></div>
-                <a class="author-name">{$item.user_data.user_nickname}的最近微博</a>
+                <a class="author-name">{$item.user_nickname}的最近微博</a>
                 <ul class="road_list">
                 </ul>
             </div>
@@ -35,7 +35,7 @@
             </div>
             <div class="w-opt clearfix">
                 <div class="optb pull-left">
-					{foreach from=$item.tag_data.tagid_arr item=$item2 key=$key2}
+					{foreach $item.tag as $value}
 		            <div class="tags_box">
 		            	<div class="tag_info_box">
 			                <ul class="road_tag clearfix">
@@ -51,26 +51,27 @@
 			                </ul>
 			                <div class="arrow_down"></div>
 			            </div>
-		                <a data-id = "{$item2}" class="tag" href="index.php?control=tag&action=info&id={$item2}">#{$item.tag_data.tagname_arr[$key2]}&nbsp;</a>
+		                <a data-id = "{$value.name}" class="tag" href="index.php?control=tag&action=info&id={$value.tag_id}">#{$value.name}&nbsp;</a>
+
 		            </div>
 		            {/foreach}
                 </div>
                 <div class="optb pull-right">
-                    <span style="color: #55a4a9;">{date('Y-m-d H:i:s', $item.create_time)}</span>
-                    {if $item.user_data.id == $smarty.session.uid || $smarty.session.admin}
+                    <span style="color: #55a4a9;">{$item.create_time}</span>
+                    {if $item.id == $Think.session.uid || $Think.session.admin}
                     <a href="#modal-del" data-toggle="modal" data-type="{$item.type}" class="delete_weibo" id="{$item.id}">删除</a>
                     {/if}
-                    {if $item.user_data.id == $smarty.session.uid}
+                    {if $item.id == $Think.session.uid}
                     <a href="#edit_weibo_modal" class="edit_weibo" data-toggle="modal">编辑</a>
                     {/if}
-                    <a href="" class="commet_btn" data-num="{$item.id}">评论({$item.commet_data})</a>
+                    <a href="" class="commet_btn" data-num="{$item.id}">评论({$item.commont_count})</a>
                 </div>
             </div>
         </div>
     </div>
     <div class="row comment_row">
         <div class="col-lg-10 col-lg-offset-2 commont_box">
-            <div class="row commet">
+        	<div class="row commet">
                 <div class="col-lg-10">
                     <input type="text" name="commet_content" class="form-control">
                 </div>

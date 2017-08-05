@@ -52,7 +52,7 @@ window.weibo = {
 		        });
 			} else {
 				$.ajax({
-		            url: "index.php?control=weibo&action=sendWeibo",
+		            url: "whome/weibo/sendWeibo",
 		            type: "POST",
 		            contentType: false,
 		            processData: false,

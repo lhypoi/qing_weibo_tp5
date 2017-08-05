@@ -28,7 +28,7 @@
             <div class="tab_user clearfix">
                 <div class="dropdown user_state pull-left" id="accountmenu">
                     {if $Think.session.info.user_name}
-                    <img src="{$Think.session.info.user_pic}" alt="">
+                    <img src="{$Think.session.info.user_pic|hasPhoto}" class="tab_pic" alt="" >
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         {$Think.session.info.user_nickname} <b class="caret"></b>
                     </a>
@@ -38,7 +38,7 @@
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="{:url('whome/user/home',array('id'=>$Think.session.uid))}" data-toggle="modal">个人主页</a>
+                            <a href="{:url('/whome/user/home',array('id'=>$Think.session.uid))}" data-toggle="modal">个人主页</a>
                         </li>
                         <li class="divider"></li>
                         <li>

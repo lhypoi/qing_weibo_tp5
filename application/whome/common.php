@@ -1,4 +1,16 @@
 <?php
 function hasPhoto($val){
-    return !empty($val)?$val:'__PUBLIC__/img/default.png';
+    return !empty($val)?$val:'/public/static/img/default.png';
+}
+
+function returnjson ($status, $msg, $html='',$err='', $other='') {
+    echo json_encode(
+        array(
+            "status"=>$status,
+            "msg"=>$msg,
+            "html"=>$html,
+            "err"=>$err,
+            "other"=>$other
+        )
+    );
 }
