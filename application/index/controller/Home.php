@@ -9,7 +9,6 @@ class Home
     {
         return 'home hello';
     }
-
 //    获取验证码
     public function getCaptcha()
     {
@@ -37,5 +36,4 @@ class Home
         }
     }
 }
-
 ?>
