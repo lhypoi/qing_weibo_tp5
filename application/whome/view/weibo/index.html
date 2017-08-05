@@ -87,7 +87,7 @@
 					<li weibo-id="{$item.id}" class="animated slideInDown list_{$item.id}">
 					    <div class="row clearfix">
 					        <div class="col-lg-2 head_box" style="text-align: center;">
-					            <img src="{$item.user_pic}" alt="" data-id="{$item.user_id}" class="img-rounded w_img">
+					            <img src="{$item.user_pic|hasPhoto}" alt="" data-id="{$item.user_id}" class="img-rounded w_img">
 					            <p>{$item.user_nickname}</p>
 					            <!-- 会员身份显示 -->
 					            <div class="user_degree">

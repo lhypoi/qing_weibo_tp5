@@ -33,6 +33,7 @@ class User extends Controller
             $user_model->allowField(true)->save(input());
             Session::set("info",[
                 "user_name"=>input("user_name"),
+                "user_nickname"=>input("user_nickname"),
                 "user_pic"=>"",
                 "id"=>$user_model->getLastInsID()
             ]);
@@ -48,8 +49,29 @@ class User extends Controller
         }
     }
     
+    //退出
     public function logout() {
         Session::delete("info");
         return ['status'=>1];
+    }
+    
+    //编辑头像
+    public function edit()
+    {
+        $create_time = time();
+        $uid = input('uid');
+        $user_pic = "__PUBLIC__/img/user/".$_SESSION['uid'].'_'.$create_time.".jpg";
+        move_uploaded_file($_FILES['user_pic']['tmp_name'], $user_pic);
+    
+        $result = model("user")
+                ->update("user_pic", "id=$uid");
+    
+        if ($result == 1) {
+            returnjson(1, "更换头像成功");
+            return [
+                "status" => 1,
+                "msg" => "更换头像成功"
+            ];
+        }
     }
 }
