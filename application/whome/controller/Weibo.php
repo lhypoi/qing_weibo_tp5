@@ -75,4 +75,14 @@ class Weibo extends Controller
             ];
         }
     }
+
+    public function headselect(){
+        $uid=input('user_id');
+//        select * from weibo_detail where user_id=$uid order by id desc limit 3
+        $weibo_data = model('weibo')->where('user_id',$uid)->order('id desc')->limit(3)->select();
+        foreach ($weibo_data as $key => $value) {
+            $weibo_data[$key]['time']=date('Y-m-d H:i:s',$weibo_data[$key]['create_time']);
+        }
+        return ($weibo_data);
+    }
 }

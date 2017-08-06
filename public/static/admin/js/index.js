@@ -15,12 +15,11 @@ $(function() {
         $('#main .weibo_content .tab-content .pic_file_see').empty().append('<img src=' + objecturl + '>');
     });
 
-    //上传头像
     var fileInput3 = $("#edit_pic");
     fileInput3.on('change', function(event) {
         var file = fileInput3[0].files[0];
         var objecturl = window.URL.createObjectURL(file);
-        $('.edit_pic_see').empty().append(`<img src="${objecturl}" style="width:200px;">`);
+        $('.edit_pic_see').empty().append(`<img src="${objecturl}" style="max-width:100%;height:100%;max-height:200px">`);
     });
 
     // 切换菜单栏改变隐藏的值,微博类型
@@ -168,13 +167,13 @@ $(function() {
         // console.log($user_id);
         touxiang_box.show(600);
         $.ajax({
-            url: "/public/whome/weibo/headselect",
+            url: "index.php?control=weibo&action=headSelect",
             type: "POST",
             data: {
                 $user_id
             },
             success: function(data) {
-                //data = $.parseJSON(data);
+                data = $.parseJSON(data);
                 let p_html = ""
                 data.forEach(item => {
                     p_html += "<li class='photo_weibo'>" + item.weibo_content + "&nbsp;&nbsp;" + item.time + "</li>";
@@ -229,21 +228,21 @@ $(function() {
     // })
 
     //判断是否是登陆状态
-//    if (user.haslogin()) {
-//        $.ajax({
-//            type: "POST",
-//            url: "whome/user/check",
-//            data: {
-//                id: localStorage.getItem('uid')
-//            },
-//            success: function(data) {
-//                data = $.parseJSON(data);
-//                if (data['status'] == 1) {
-//                    $('#accountmenu').html(data['html']);
-//                }
-//            }
-//        });
-//    }
+    if (user.haslogin()) {
+        $.ajax({
+            type: "POST",
+            url: "index.php?control=user&action=check",
+            data: {
+                id: localStorage.getItem('uid')
+            },
+            success: function(data) {
+                data = $.parseJSON(data);
+                if (data['status'] == 1) {
+                    $('#accountmenu').html(data['html']);
+                }
+            }
+        });
+    }
 
     //添加标签
     var tagname_arr = [];
@@ -312,5 +311,5 @@ function search_music(this_elm) {
 
 // 验证码改变
 function changeCaptcha (this_elm) {
-    $(this_elm).attr('src', '/public/index/home/getCaptcha?' + Math.random());
+    $(this_elm).attr('src', '../qing_weibo_tp5/public/index/home/getCaptcha?' + Math.random());
 }
