@@ -70,21 +70,24 @@ $(function() {
 
     // 事件委托绑定评论下拉框，评论增删功能
     $('.weibo_list').click(function(event) {
+    	event.preventDefault();
         let this_elm = $(event.target);
         // 评论下拉框
         if (this_elm.hasClass('commet_btn')) {
+        	//comment.getComment(this_elm);
             var comment_box = this_elm.parent().parent().parent().parent().siblings('.comment_row').find('.commont_box');
             if (comment_box.css('display') != 'block') {
                 var article_id = this_elm.attr('data-num');
                 $.ajax({
                     type: "POST",
-                    url: 'index.php?control=comment&action=getComment',
+                    url: '/public/whome/commont/getComment',
                     data: {
-                        article_id: article_id
+                        article_id: article_id,
+                        commentList: null,
+                        page: 1
                     },
                     success: function(rtnData) {
-                        let rtnObject = JSON.parse(rtnData);
-                        comment_box.find('.commont_list').html(rtnObject.html);
+                        comment_box.find('.commont_list').html(rtnData.html);
                     }
                 });
             }
@@ -97,14 +100,13 @@ $(function() {
                 alert('请先登陆');
             };
             $.ajax({
-                url: "index.php?control=comment&action=add",
+                url: "/public/whome/commont/addComment",
                 type: "POST",
                 data: {
                     commet_content: $(this_elm).parent().prev().find('input').val(),
                     weibo_id
                 },
                 success: function(data) {
-                    data = $.parseJSON(data);
                     if (data['status'] == 1) {
                         $('li[weibo-id=' + weibo_id + '] .commont_list').eq(0).prepend(data['html']);
                         $(this_elm).parent().prev().find('input').val('');
@@ -122,14 +124,13 @@ $(function() {
             var article_id = this_elm.attr('data-id');
             $.ajax({
                 type: "POST",
-                url: "index.php?control=comment&action=getComment",
+                url: "/public/whome/commont/getComment",
                 data: {
                     article_id,
                     commentList,
-                    comment
+                    page: comment
                 },
                 success: function(data) {
-                    data = $.parseJSON(data);
                     if (data['status'] == 1) {
                         this_elm.parent().parent().append(data['html']);
                         this_elm.parent().remove();

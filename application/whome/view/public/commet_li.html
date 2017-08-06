@@ -1,0 +1,27 @@
+{foreach $item as $value}
+    <li commont_id="{$value.id}" class="animated slideInDown">
+        <div class="row">
+            <div class="col-lg-1">
+                <img src="{$value.user_pic}" alt="" class="c_img" />
+            </div>
+            <div class="col-lg-11">
+                <span style="color:#05425e">{$value.user_nickname}:</span>
+                {$value.commet_content}
+                <div class="w-opt clearfix">
+                    <div class="optb pull-right">
+                        <span style="color: #ccc;">{$value.commet_time|date='Y-m-d H:i:s',###}</span>
+                        {if $value.user_id == $Think.session.info.id || $Think.session.admin}
+                            <input type="hidden" value="{$value.weibo_id}" />
+                            <a href="#modal_comment" data-toggle="modal" class="delete_comment" data-num="{$value.id}">删除</a>
+                        {/if}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </li>
+{/foreach}
+{if $more == 1}
+    <div class="row">
+	    <a class="more" data-id="{$value.weibo_id}" data-page="{$page}">点击加载更多</a>
+    </div>
+{/if}
