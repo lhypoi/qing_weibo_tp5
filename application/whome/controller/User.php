@@ -118,7 +118,22 @@ class User extends Controller
                 "msg"=>$file->getError()
             ];
         }
+    }
 
+    //获取相册
+    public function getPhoto() {
+        $pageStart = $_POST['photoList'];
+        $uid = $_SESSION['uid'];
+        $page = $pageStart.",9";
+        $weibo_model = $this->model("weibo");
+        $photo_list = $weibo_model->getPhotoList($uid, $page);
+        if(empty($photo_list)) {
+            returnjson(0, "无更多页面");
+        }else {
+            $this->assign("photo_list", $photo_list);
+            $html = $this->fetch("photo_li.html");
+            returnjson(1, "获取相册成功", $html, "", $photo_list);
+        }
     }
     
     //判断本地缓存是否存在
@@ -133,4 +148,5 @@ class User extends Controller
             "html" => $html,
         ];
     }
+
 }

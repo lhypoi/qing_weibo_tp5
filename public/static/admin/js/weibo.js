@@ -7,6 +7,7 @@ window.weibo = {
 	str:"",
 	tof:"",
 	showHTML: function(data) {
+		data = $.parseJSON(data);
         if (data['status'] == 1) {
 			if(this.type == "short_content" || this.type == "pic_text" || this.type == "music") {
 				$('.weibo_box').prepend(data['html']);
@@ -35,7 +36,7 @@ window.weibo = {
 			$('.contentError').html("");
 			if(this.type == "video") {
 				$.ajax({
-		            url: "whome/weibo/sendWeibo",
+		            url: "index.php?control=weibo&action=sendWeibo",
 		            type: "POST",
 		            contentType: false,
 		            processData: false,
@@ -51,7 +52,7 @@ window.weibo = {
 		        });
 			} else {
 				$.ajax({
-		            url: "whome/weibo/sendWeibo",
+		            url: "index.php?control=weibo&action=sendWeibo",
 		            type: "POST",
 		            contentType: false,
 		            processData: false,
@@ -106,12 +107,16 @@ window.weibo = {
 		if (this.type == "pic_text") {
 			tof=this.fileContent("pic_file");
 			fd.append('pic_file', $('#pic_file').get(0).files[0]);
+
 		}else if (this.type == "music") {
 			fd.append('music_file', /id\=([0-9]*)/.exec($('#tab3 iframe').attr('src'))[1]);
 		}else if (this.type == "video") {
 			tof=this.fileContent("video_file");
 			fd.append('video_file', $('#video_file').get(0).files[0]);
 		}
+		$.each(tagname_arr, function(key, val) {
+        	fd.append('tagname_arr[]', val);
+    	});
 		if(tof){
 			this.ajaxDo(fd,xhrOnProgress);
 		}

@@ -21,16 +21,17 @@ window.user = {
 	    fd.append('user_nickname', $('#register_user_nickname').val());
 	    fd.append('user_name', $('#register_user_name').val());
 	    fd.append('user_pwd', $('#register_user_pwd').val());
-	    fd.append('user_repwd', $('#register_user_repwd').val());
+	    fd.append('type', 'register');
 	    $.ajax({
-	        url: "whome/user/reg",
+	        url: "index.php?control=user&action=reg",
 	        type: "POST",
 	        contentType: false,
 	        processData: false,
 	        data: fd,
 	        success: function(data) {
+	            data = $.parseJSON(data);
 	            if (data['status'] == 1) {
-	                localStorage.setItem("uid", data.id);
+	                localStorage.setItem("uid", data['other']);
 	                location.reload();
 	            } else {
 	                alert(data['msg']);
@@ -42,12 +43,13 @@ window.user = {
 
 	do_quit :function() {
 	    $.ajax({
-	        url: "/public/whome/user/logout",
+	        url: "index.php?control=user&action=logout",
 	        type: "POST",
 	        success: function(data) {
+	            data = $.parseJSON(data);
 	            if (data['status'] == 1) {
 	                localStorage.removeItem('uid');
-	                location.reload();
+	                location.href= "index.php";
 	            }
 	        }
 	    });
@@ -57,7 +59,7 @@ window.user = {
 
 		var promise = new Promise(function (resolve, reject) {
 			$.ajax({
-				url: "/public/index/home/checkCaptcha",
+				url: "http://localhost/group/qing_weibo_tp5/public/index/home/checkCaptcha",
 				type: "POST",
 				data: {captcha: $('input[name=captcha]').val()},
 				success: function (data) {
@@ -72,7 +74,7 @@ window.user = {
 
 		promise.then(function () {
 		    $.ajax({
-		        url: "/public/whome/user/log",
+		        url: "index.php?control=user&action=log",
 		        type: "POST",
 		        data: {
 		            user_name: $('#login_user_name').val(),
@@ -80,18 +82,20 @@ window.user = {
 		            type: 'login'
 		        },
 		        success: function(data) {
+		            data = $.parseJSON(data);
 		            if (data['status'] == 1) {
-		                localStorage.setItem("uid", data.info.id);
+		                localStorage.setItem("uid", data['other']);
 		                location.reload();
 		            } else {
 		                alert(data['msg']);
-						$('#img_captcha').attr('src', '/public/index/home/getCaptcha?' + Math.random());
+						$('#img_captcha').attr('src', 'http://localhost/group/qing_weibo_tp5/public/index/home/getCaptcha?' + Math.random());
 		            }
 		        }
 		    });
 		}, function (value) {
 			alert(value);
-			$('#img_captcha').attr('src', '/public/index/home/getCaptcha?' + Math.random());
+			$('#img_captcha').attr('src', 'http://localhost/group/qing_weibo_tp5/public/index/home/getCaptcha?' + Math.random());
+
 		})
 
 	},
@@ -102,13 +106,15 @@ window.user = {
 	    fd.append('user_pic', $('#edit_pic').get(0).files[0]);
 	    fd.append('type', 'edit');
 	    $.ajax({
-	        url: "/public/whome/user/edit",
+	        url: "index.php?control=user&action=edit",
 	        type: "POST",
 	        contentType: false,
 	        processData: false,
 	        data: fd,
 	        success: function(data) {
+	            data = $.parseJSON(data);
 	            if (data['status'] == 1) {
+	                alert(data['msg']);
 	                location.reload();
 	            }
 	        }
@@ -150,9 +156,10 @@ window.user = {
 		if(index == 2) {
 			$('#page-mark').attr('data-page','');
 			$.ajax({
-				url: "whome/user/getPhoto",
+				url: "index.php?control=user&action=getUserInfo",
 		        type: "POST",
 		        success: function(data) {
+		            data = $.parseJSON(data);
 		            if (data['status'] == 1) {
 		                $('.info').html(data['html']);
 		            }
