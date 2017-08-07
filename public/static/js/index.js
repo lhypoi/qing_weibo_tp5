@@ -131,10 +131,10 @@ $(function() {
     			data: {
     			     tag_id
     			 },
-    			 success: function(data) {
+    			 success: function(rdata) {
     			     //data = $.parseJSON(data);
     			     let p_html = ""
-    				 data.other.forEach(item=>{
+    				 rdata.forEach(item=>{
     				     p_html+= "<a href='/public/whome/tag/show',{id:"+tag_id+"}><li style='overflow:hidden;'>"+item.weibo_content+"</li></a>";
     				 })
     				 infoTarget.siblings('.tag_info_box').find('.road_tag').html(p_html);

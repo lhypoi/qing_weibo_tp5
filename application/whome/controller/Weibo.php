@@ -154,49 +154,65 @@ class Weibo extends Controller
 //    $type=$_POST['type'];
         $type=input('type');
         $weibo_data=array();
-
+        $root=$_SERVER['DOCUMENT_ROOT'];
 //    $result=$this->model("weibo")->getWeiboListByTag($weibo_id);
 //    "SELECT * FROM weibo_detail WHERE id = $weibo_id";
-        $result=model('weibo')->where('id='.$weibo_id)->select('*');
+        $result=model("weibo")->where("id=".$weibo_id)->select();
+//        var_dump($result[0]);exit();
         if($type=='pic_text'){
             // print_r($result);
             $file_path=$result[0]['pic'];
             // echo $file_path;exit();
-            unlink($file_path);
+            unlink($root.$file_path);
         }elseif ($type=='video') {
             $file_path=$result[0]['video'];
-            unlink($file_path);
+            unlink($root.$file_path);
         }elseif($type=='long_content'){
             $str=$result[0]['weibo_content'];
             preg_match_all('/<img.+src=\"\/?(.+\.(jpg|gif|bmp|bnp|png))\"?.+>/iU',$str,$match);
             foreach ($match[1] as $key => $value) {
-                $file_path=$_SERVER['DOCUMENT_ROOT'].$match[1][$key];
+                $file_path=$root.$match[1][$key];
                 unlink($file_path);
             }
 
         }
-
-
 // 查询评论表该微博是否有评论信息
 
-//        $commot_list = $this->model("comment")->getCommontByWid($weibo_id);
-//        select("select * from weibo_commet where weibo_id = $weibo_id")
-        $commot_list=db('weibo_commet')->where('weibo_id='.$weibo_id)->select('*');
+        $commot_list=model("commet")->where("weibo_id=".$weibo_id)->select();
         if (!empty( $commot_list)) {
             foreach ($commot_list as $key=>$value) {
-                $this->model("weibo_commet")->where("id".$value['id'])->delete();
+                model("commet")->where("id=".$value['id'])->delete();
             }
         }
 
-//查询是否有标签，有则删除   还没改！！！
-        $tag_data=$this->model("tag")->getIdInRelation($weibo_id);
+        //查询是否有标签，有则删除
+
+        $tag_data=db("tag_relationship")->alias('r')
+            ->join("tag t",'t.id=r.tag_id')
+            ->field("r.id")
+            ->where("r.weibo_id = ".$weibo_id, "r.tag_id=t.id")
+            ->select();
+//        print_r($tag_data);exit();
         if(!empty($tag_data)){
             foreach ($tag_data as $key => $value){
-                $this->model("tag")->delTag($value['id']);
+                db("tag_relationship")->where("id=".$value['id'])->delete();
             }
         }
+//        "select r.id from tag_relationship r inner join tag t on r.weibo_id = ".$weibo_id." and r.tag_id = t.id";
+//$tag_model->alias('t')
+//            ->join('tag_relationship r', 't.id=r.tag_id')
+//            ->field('*')
+//            ->where('r.weibo_id='.$item['id'])
+//            ->select();
+//        $tag_data=$this->model("tag")->getIdInRelation($weibo_id);
+//        if(!empty($tag_data)){
+//            foreach ($tag_data as $key => $value){
+//                $this->model("tag")->delTag($value['id']);
+//            }
+//        }
 
-        $this->model("weibo")->delInfo($table,$weibo_id);
+//        $this->model("weibo")->delInfo($table,$weibo_id);
+        model("weibo")->where("id=".$weibo_id)->delete();
 
         return [
             "status" => 1,
