@@ -174,13 +174,13 @@ $(function() {
             url: "/public/whome/weibo/headSelect",
             type: "POST",
             data: {
-                $user_id
+                user_id:$user_id
             },
             success: function(data) {
 
                 let p_html = ""
                 data.forEach(item => {
-                    p_html += "<li class='photo_weibo'>" + item.weibo_content + "&nbsp;&nbsp;" + item.time + "</li>";
+                    p_html += "<li class='photo_weibo'>" + item.weibo_content + "&nbsp;&nbsp;" + item.create_time + "</li>";
 
                 })
                 $('.road_list').html(p_html);

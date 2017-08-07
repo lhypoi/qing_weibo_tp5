@@ -65,10 +65,10 @@ class Weibo extends Controller
 
     public function headSelect(){
         $uid=input('user_id');
-        $weibo_data = model("weibo")->where("user_id".$uid)->order("id desc")->limit(3)->select("*");
-        foreach ($weibo_data as $key => $value) {
-            $weibo_data[$key]['time']=date('Y-m-d H:i:s',$weibo_data[$key]['create_time']);
-        }
+        $weibo_data = model("weibo")->where("user_id=".$uid)->order("id desc")->limit(3)->select();
+//        foreach ($weibo_data as $key => $value) {
+//            $weibo_data[$key]['time']=date('Y-m-d H:i:s',$value['create_time']);
+//        }
         return $weibo_data;
     }
 
