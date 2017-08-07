@@ -1,6 +1,6 @@
 <?php
 function hasPhoto($val){
-    return !empty($val)?$val:'static/img/default.png';
+    return !empty($val)?$val:'/public/static/img/default.png';
 }
 
 function returnjson ($status, $msg, $html='',$err='', $other='') {

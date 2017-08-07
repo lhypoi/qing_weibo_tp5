@@ -37,5 +37,17 @@ class Tag extends Controller
         $this->assign("weibo_data", $weibo_data);
         return $this->fetch("weibo/tag");
     }
+    public function tagSelect(){
+        $tid=input('tag_id');
+//        SELECT weibo_id FROM tag_relationship WHERE tag_id = $id ORDER BY id DESC LIMIT $page"
+        $weibo_id=db('tag_relationship')->field('weibo_id')->where('tag_id='.$tid)->order("id DESC")->limit(3)->select();
+        $result = array();
+        foreach ($weibo_id as $key => $value) {
+//            SELECT * FROM weibo_detail WHERE id = $weibo_id
+            $value = model("weibo")->where("id".$value['weibo_id'])->select();
+            $result.array_push($result, $value[0]);
+        }
+        return ["status" => 1,'','', $result];
+    }
 
 }

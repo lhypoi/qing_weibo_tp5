@@ -1,25 +1,25 @@
 window.comment={
 	// 获取评论列表
-	this_elm:'',
-	getComment:function (this_elm) {
+	//this_elm:'',
+	getComment: function(this_elm) {
 		var comment_box = this_elm.parent().parent().parent().parent().siblings('.comment_row').find('.commont_box');
         if (comment_box.css('display') != 'block') {
             var article_id = this_elm.attr('data-num');
             $.ajax({
                 type: "POST",
-                url: 'index.php?control=comment&action=getComment',
+                url: '/public/whome/commont/getComment',
                 data: {
-                    article_id: article_id
+                    article_id: article_id,
+                    commentList: null
                 },
                 success: rtnData=> {
-                    let rtnObject = JSON.parse(rtnData);
-                    comment_box.find('.commont_list').html(rtnObject.html);
+                    comment_box.find('.commont_list').html(rtnData.html);
                 }
             });
         }
         $(this_elm).closest("li").find('.commont_box').slideToggle();
-        return false;
 	},
+	
 	addComment:function(){
 		let weibo_id = $(this_elm).closest("li").attr('weibo-id');
 		// 这里要加用户对象的判断
@@ -43,31 +43,32 @@ window.comment={
         });
         return false;
 	},
+	
 	edit:function(){
 		$('#edit_weibo_modal textarea').val($(this_elm).parent().parent().prev().text().trim());
         $('#edit_weibo_modal input[type=hidden]').val($(this_elm).closest('li').attr('weibo-id'));
 	},
+	
 	load:function(){
 		var comment = this_elm.attr('data-page');
-            var commentList = 0;
-            commentList = comment * 5;
-            var article_id = this_elm.attr('data-id');
-            $.ajax({
-                type: "POST",
-                url: "index.php?control=comment&action=getComment",
-                data: {
-                    article_id,
-                    commentList,
-                    comment
-                },
-                success: data=> {
-                    data = $.parseJSON(data);
-                    if (data['status'] == 1) {
-                        this_elm.parent().parent().append(data['html']);
-                        this_elm.parent().remove();
-                    }
+        var commentList = 0;
+        commentList = comment * 5;
+        var article_id = this_elm.attr('data-id');
+        $.ajax({
+            type: "POST",
+            url: "/public/whome/commont/getComment",
+            data: {
+                article_id,
+                commentList,
+                comment
+            },
+            success: data=> {
+                if (data['status'] == 1) {
+                    this_elm.parent().parent().append(data['html']);
+                    this_elm.parent().remove();
                 }
-            });
-            return false;
+            }
+        });
+        return false;
 	}
 }

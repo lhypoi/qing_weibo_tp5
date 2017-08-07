@@ -11,6 +11,10 @@ class User extends Controller
     public function home()
     {
 
+        if (!input('id')) {
+            return 'error';
+        }
+
         $user = model('user')
             ->field('*')
             ->where('id='.input('id'))
@@ -95,26 +99,34 @@ class User extends Controller
         $create_time = time();
         $uid = input('uid');
         $user_pic = "/public/static/img/user/".$uid.'_'.$create_time.".jpg";
-        //move_uploaded_file($_FILES['user_pic']['tmp_name'], $user_pic);
         $file = Request()->file("user_pic");
         $info = $file->validate(["ext"=>"jpg,png"])->move("static/img/user/", $uid.'_'.$create_time.".jpg");
         if($info) {
             $result = model("user")
                     ->where("id=$uid")
                     ->setField("user_pic", $user_pic);
+            if ($result == 1) {
+                Session::set("info.user_pic", $user_pic);
+                return [
+                    "status" => 1,
+                    "msg" => "更换头像成功"
+                ];
+            }
         }else{
             return [
                 "status"=>0,
                 "msg"=>$file->getError()
             ];
         }
-    
-        if ($result == 1) {
-            Session::set("info.user_pic", $user_pic);
-            return [
-                "status" => 1,
-                "msg" => "更换头像成功"
-            ];
-        }
+
     }
+//验证登陆
+//    public function check() {
+//        $id = input('id');
+//        Session::set('uid',$id);
+//        $result = $this->model("user")->getUserLog($id);
+//        $this->assign("item", $result);
+//        $html = $this->fetch("login_state.html");
+//        returnjson(1, "", $html);
+//    }
 }

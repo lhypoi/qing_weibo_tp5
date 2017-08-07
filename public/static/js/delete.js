@@ -30,10 +30,10 @@ $(function() {
 
     	$.ajax({
 			type: "POST",
-            url: 'index.php?control=weibo&action=delete',
+            url: '/public/whome/weibo/delete',
             data: {id: record_id, type: record_type},
-            success: function(rtnData) {
-            	let rtnObject = JSON.parse(rtnData);
+            success: function(rtnObject) {
+            	//let rtnObject = JSON.parse(rtnData);
                 if(rtnObject.status == 1) {
                 	alert(rtnObject.msg);
                 	record_row.parent().parent().parent().parent().parent().remove();
@@ -48,8 +48,8 @@ $(function() {
 			type: "POST",
             url: 'index.php?control=comment&action=del',
             data: {comment_id: c_id, article_id: a_id, type: 'del'},
-            success: function(rtnData) {
-            	let rtnObject = JSON.parse(rtnData);
+            success: function(rtnObject) {
+            	//let rtnObject = JSON.parse(rtnData);
                 if(rtnObject.status == 1) {
                 	alert(rtnObject.msg);
                 	del_row.parent().parent().parent().parent().parent().remove();

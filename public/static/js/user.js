@@ -42,7 +42,7 @@ window.user = {
 
 	do_quit :function() {
 	    $.ajax({
-	        url: "whome/user/logout",
+	        url: "/public/whome/user/logout",
 	        type: "POST",
 	        success: function(data) {
 	            if (data['status'] == 1) {
@@ -72,7 +72,7 @@ window.user = {
 
 		promise.then(function () {
 		    $.ajax({
-		        url: "whome/user/log",
+		        url: "/public/whome/user/log",
 		        type: "POST",
 		        data: {
 		            user_name: $('#login_user_name').val(),
@@ -102,7 +102,7 @@ window.user = {
 	    fd.append('user_pic', $('#edit_pic').get(0).files[0]);
 	    fd.append('type', 'edit');
 	    $.ajax({
-	        url: "whome/user/edit",
+	        url: "/public/whome/user/edit",
 	        type: "POST",
 	        contentType: false,
 	        processData: false,
