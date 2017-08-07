@@ -68,75 +68,22 @@ $(function() {
     // })
 
 
-    // 事件委托绑定评论下拉框，评论增删功能
+    // 事件委托绑定评论下拉框，评论增删功能，编辑微博
     $('.weibo_list').click(function(event) {
     	event.preventDefault();
         let this_elm = $(event.target);
         // 评论下拉框
         if (this_elm.hasClass('commet_btn')) {
-        	//comment.getComment(this_elm);
-            var comment_box = this_elm.parent().parent().parent().parent().siblings('.comment_row').find('.commont_box');
-            if (comment_box.css('display') != 'block') {
-                var article_id = this_elm.attr('data-num');
-                $.ajax({
-                    type: "POST",
-                    url: '/public/whome/commont/getComment',
-                    data: {
-                        article_id: article_id,
-                        commentList: null,
-                        page: 1
-                    },
-                    success: function(rtnData) {
-                        comment_box.find('.commont_list').html(rtnData.html);
-                    }
-                });
-            }
-            $(this_elm).closest("li").find('.commont_box').slideToggle();
+        	comments.getComment(this_elm);
             return false;
         } else if (this_elm.hasClass('commet_send')) {
             // 评论发送
-            let weibo_id = $(this_elm).closest("li").attr('weibo-id');
-            if (!user.haslogin()) {
-                alert('请先登陆');
-            };
-            $.ajax({
-                url: "/public/whome/commont/addComment",
-                type: "POST",
-                data: {
-                    commet_content: $(this_elm).parent().prev().find('input').val(),
-                    weibo_id
-                },
-                success: function(data) {
-                    if (data['status'] == 1) {
-                        $('li[weibo-id=' + weibo_id + '] .commont_list').eq(0).prepend(data['html']);
-                        $(this_elm).parent().prev().find('input').val('');
-                    }
-                }
-            });
+            comments.addComment(this_elm);
             return false;
         } else if (this_elm.hasClass('edit_weibo')) {
-            $('#edit_weibo_modal textarea').val($(this_elm).parent().parent().prev().text().trim());
-            $('#edit_weibo_modal input[type=hidden]').val($(this_elm).closest('li').attr('weibo-id'));
+            comments.edit(this_elm);
         } else if (this_elm.hasClass('more')) { //异步加载评论
-            var comment = this_elm.attr('data-page');
-            var commentList = 0;
-            commentList = comment * 5;
-            var article_id = this_elm.attr('data-id');
-            $.ajax({
-                type: "POST",
-                url: "/public/whome/commont/getComment",
-                data: {
-                    article_id,
-                    commentList,
-                    page: comment
-                },
-                success: function(data) {
-                    if (data['status'] == 1) {
-                        this_elm.parent().parent().append(data['html']);
-                        this_elm.parent().remove();
-                    }
-                }
-            });
+            comments.load(this_elm);
             return false;
         }
     })
@@ -230,21 +177,20 @@ $(function() {
     // })
 
     //判断是否是登陆状态
-//    if (user.haslogin()) {
-//        $.ajax({
-//            type: "POST",
-//            url: "whome/user/check",
-//            data: {
-//                id: localStorage.getItem('uid')
-//            },
-//            success: function(data) {
-//                data = $.parseJSON(data);
-//                if (data['status'] == 1) {
-//                    $('#accountmenu').html(data['html']);
-//                }
-//            }
-//        });
-//    }
+    if (user.haslogin()) {
+        $.ajax({
+            type: "POST",
+            url: "whome/user/check_local",
+            data: {
+                id: localStorage.getItem('uid')
+            },
+            success: function(data) {
+                if (data['status'] == 1) {
+                    $('#accountmenu').html(data['html']);
+                }
+            }
+        });
+    }
 
     //添加标签
     var tagname_arr = [];

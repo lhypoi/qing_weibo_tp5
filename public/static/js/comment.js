@@ -1,4 +1,4 @@
-window.comment={
+window.comments={
 	// 获取评论列表
 	//this_elm:'',
 	getComment: function(this_elm) {
@@ -20,39 +20,36 @@ window.comment={
         $(this_elm).closest("li").find('.commont_box').slideToggle();
 	},
 	
-	addComment:function(){
+	addComment:function(this_elm){
 		let weibo_id = $(this_elm).closest("li").attr('weibo-id');
-		// 这里要加用户对象的判断
-        if (!haslogin()) {
+        if (!user.haslogin()) {
             alert('请先登陆');
-        };
-        $.ajax({
-            url: "index.php?control=comment&action=add",
-            type: "POST",
-            data: {
-                commet_content: $(this_elm).parent().prev().find('input').val(),
-                weibo_id
-            },
-            success: data=> {
-                data = $.parseJSON(data);
-                if (data['status'] == 1) {
-                    $('li[weibo-id=' + weibo_id + '] .commont_list').eq(0).prepend(data['html']);
-                    $(this_elm).parent().prev().find('input').val('');
-                }
-            }
-        });
-        return false;
+        }else{
+	        $.ajax({
+	            url: "/public/whome/commont/addComment",
+	            type: "POST",
+	            data: {
+	                commet_content: $(this_elm).parent().prev().find('input').val(),
+	                weibo_id
+	            },
+	            success: function(data) {
+	                if (data['status'] == 1) {
+	                    $('li[weibo-id=' + weibo_id + '] .commont_list').eq(0).prepend(data['html']);
+	                    $(this_elm).parent().prev().find('input').val('');
+	                }
+	            }
+	        });
+        }
 	},
 	
-	edit:function(){
+	edit:function(this_elm){
 		$('#edit_weibo_modal textarea').val($(this_elm).parent().parent().prev().text().trim());
         $('#edit_weibo_modal input[type=hidden]').val($(this_elm).closest('li').attr('weibo-id'));
 	},
 	
-	load:function(){
-		var comment = this_elm.attr('data-page');
-        var commentList = 0;
-        commentList = comment * 5;
+	load:function(this_elm){
+		var comment = parseInt(this_elm.attr('data-page')) + 1;
+        var commentList = comment * 5;
         var article_id = this_elm.attr('data-id');
         $.ajax({
             type: "POST",
@@ -60,15 +57,14 @@ window.comment={
             data: {
                 article_id,
                 commentList,
-                comment
+                page: comment
             },
-            success: data=> {
+            success: function(data) {
                 if (data['status'] == 1) {
                     this_elm.parent().parent().append(data['html']);
                     this_elm.parent().remove();
                 }
             }
         });
-        return false;
 	}
 }

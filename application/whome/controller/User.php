@@ -120,4 +120,17 @@ class User extends Controller
         }
 
     }
+    
+    //判断本地缓存是否存在
+    public function check_local() {
+        $id = input('id');
+        $result = model("user")->where("id=".$id)->find();
+        Session::set("info", $result);
+        $this->assign("item", $result);
+        $html = $this->fetch("/public/login_state");
+        return [
+            "status" => 1,
+            "html" => $html,
+        ];
+    }
 }
