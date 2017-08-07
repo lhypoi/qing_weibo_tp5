@@ -67,6 +67,12 @@ $(function() {
         }
     })
 
+    // 管理本站按钮跳转
+    $('#manage_server').click(function () {
+        console.log(1);
+        location.href = $(this).attr('href');
+    });
+
     // 事件委托处理音乐搜索结果
     $('.search_list').click(function(event) {
         let this_elm = $(event.target);
@@ -214,9 +220,10 @@ $(function() {
     })
     
     //修改个人信息
-    $('#info-form').on('submit', function(e) {
-        // var _this = $(e.target).children();
-    	// user.change_info(_this);
+    $('#info-form').on('click', function(e) {
+    	e.preventDefault();
+    	var _this = $(e.target).parent().siblings();
+    	user.change_info(_this);
     })
 })
 

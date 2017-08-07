@@ -23,7 +23,6 @@ class Weibo extends Controller
                         ->select();
         }
         $this->assign("weibo_data", $weibo_list);
-        //print_r($weibo_list);
         return $this->fetch();
     }
     
@@ -33,7 +32,7 @@ class Weibo extends Controller
         $weibo_model = model("weibo");
         $weibo_data = array();
         $weibo_id = array();
-        if($page_mark == 'index') {
+        if($page_mark == 'index' || $page_mark == 'home') {
             $weibo_data = $weibo_model
                         ->field("weibo_detail.*, user.user_nickname, user.user_pic")
                         ->join("user", "user.id = weibo_detail.user_id")
@@ -161,6 +160,7 @@ class Weibo extends Controller
 //        var_dump($result[0]);exit();
         if($type=='pic_text'){
             // print_r($result);
+
             $file_path=$root.$result[0]['pic'];
 
             if(file_exists($file_path)){
@@ -170,13 +170,15 @@ class Weibo extends Controller
             $file_path=$root.$result[0]['video'];
             if(file_exists($file_path)){
                 unlink($file_path);
+
             }
         }elseif($type=='long_content'){
             $str=$result[0]['weibo_content'];
             preg_match_all('/<img.+src=\"\/?(.+\.(jpg|gif|bmp|bnp|png))\"?.+>/iU',$str,$match);
             foreach ($match[1] as $key => $value) {
                 $file_path=$root.$match[1][$key];
-                if(file_exists($file_path)){
+
+                if (file_exists($file_path)) {
                     unlink($file_path);
                 }
             }

@@ -1,0 +1,20 @@
+{include file="public/header"}
+
+<h2>用户管理</h2>
+<table class="table">
+    <tr>
+        <th>用户ID</th>
+        <th>用户名</th>
+        <th>微博数量</th>
+    </tr>
+    {foreach $list as $item}
+    <tr>
+        <td>{$item.id}</td>
+        <td>{$item.user_name}</td>
+        <td>{$item.weibo_count}</td>
+    </tr>
+    {/foreach}
+</table>
+
+
+{include file="public/footer"}

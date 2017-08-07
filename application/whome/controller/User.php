@@ -129,16 +129,17 @@ class User extends Controller
             ->field('id,pic')
             ->where('user_id='.$uid.' and pic IS NOT NULL and pic != \'\'')
             ->order('id desc')
-            ->page($page)
+            ->limit($page)
             ->select();
         if(empty($photo_list)) {
             return [
                 "status"=>0,
-                "msg"=>"无更多页面"
+                "msg"=>"无更多页面",
+                "photo"=>$page
             ];
         }else {
             $this->assign("photo_list", $photo_list);
-            $html = $this->fetch("public/photo_li");
+            $html = $this->fetch("/public/photo_li");
             return [
                 "status"=>1,
                 "msg"=>"获取相册成功",

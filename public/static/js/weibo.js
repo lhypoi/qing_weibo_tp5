@@ -35,7 +35,7 @@ window.weibo = {
 			$('.contentError').html("");
 			if(this.type == "video") {
 				$.ajax({
-		            url: "whome/weibo/sendWeibo",
+		            url: "/public/whome/weibo/sendWeibo",
 		            type: "POST",
 		            contentType: false,
 		            processData: false,
@@ -51,7 +51,7 @@ window.weibo = {
 		        });
 			} else {
 				$.ajax({
-		            url: "whome/weibo/sendWeibo",
+		            url: "/public/whome/weibo/sendWeibo",
 		            type: "POST",
 		            contentType: false,
 		            processData: false,
