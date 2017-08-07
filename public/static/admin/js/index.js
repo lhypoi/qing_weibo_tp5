@@ -15,12 +15,11 @@ $(function() {
         $('#main .weibo_content .tab-content .pic_file_see').empty().append('<img src=' + objecturl + '>');
     });
 
-    //上传头像
     var fileInput3 = $("#edit_pic");
     fileInput3.on('change', function(event) {
         var file = fileInput3[0].files[0];
         var objecturl = window.URL.createObjectURL(file);
-        $('.edit_pic_see').empty().append(`<img src="${objecturl}" style="width:200px;">`);
+        $('.edit_pic_see').empty().append(`<img src="${objecturl}" style="max-width:100%;height:100%;max-height:200px">`);
     });
 
     // 切换菜单栏改变隐藏的值,微博类型
@@ -43,26 +42,99 @@ $(function() {
     $('.menu_box input[type=button]').click(function() {
     	weibo.submit_weibo(tagname_arr);
     	tagname_arr = [];
-        $('#tag').val('');
-        $('.tags').eq(0).html('');
     })
-    
-    // 事件委托绑定评论下拉框，评论增删功能，编辑微博
+
+
+    // 更新微博
+    // 发布评论
+    // 删除评论
+
+    // 评论js对象封装
+    // let this_elm="";
+    // $('.weibo_list').click(function(event) {
+    //     this_elm = $(event.target);
+    //     // 评论下拉框
+    //     if (this_elm.hasClass('commet_btn')) {
+    //         comment.getComment(this_elm);
+
+    //     }else if (this_elm.hasClass('commet_send')) {
+    //         comment.addComment();
+    //     }else if (this_elm.hasClass('edit_weibo')) {
+    //         comment.edit()
+    //     } else if (this_elm.hasClass('more')) {
+    //         comment.load();
+    //     }
+    // })
+
+
+    // 事件委托绑定评论下拉框，评论增删功能
     $('.weibo_list').click(function(event) {
-    	event.preventDefault();
         let this_elm = $(event.target);
         // 评论下拉框
         if (this_elm.hasClass('commet_btn')) {
-        	comments.getComment(this_elm);
+            var comment_box = this_elm.parent().parent().parent().parent().siblings('.comment_row').find('.commont_box');
+            if (comment_box.css('display') != 'block') {
+                var article_id = this_elm.attr('data-num');
+                $.ajax({
+                    type: "POST",
+                    url: 'index.php?control=comment&action=getComment',
+                    data: {
+                        article_id: article_id
+                    },
+                    success: function(rtnData) {
+                        let rtnObject = JSON.parse(rtnData);
+                        comment_box.find('.commont_list').html(rtnObject.html);
+                    }
+                });
+            }
+            $(this_elm).closest("li").find('.commont_box').slideToggle();
             return false;
         } else if (this_elm.hasClass('commet_send')) {
             // 评论发送
-            comments.addComment(this_elm);
+            let weibo_id = $(this_elm).closest("li").attr('weibo-id');
+            if (!user.haslogin()) {
+                alert('请先登陆');
+            };
+            $.ajax({
+                url: "index.php?control=comment&action=add",
+                type: "POST",
+                data: {
+                    commet_content: $(this_elm).parent().prev().find('input').val(),
+                    weibo_id
+                },
+                success: function(data) {
+                    data = $.parseJSON(data);
+                    if (data['status'] == 1) {
+                        $('li[weibo-id=' + weibo_id + '] .commont_list').eq(0).prepend(data['html']);
+                        $(this_elm).parent().prev().find('input').val('');
+                    }
+                }
+            });
             return false;
         } else if (this_elm.hasClass('edit_weibo')) {
-            comments.edit(this_elm);
+            $('#edit_weibo_modal textarea').val($(this_elm).parent().parent().prev().text().trim());
+            $('#edit_weibo_modal input[type=hidden]').val($(this_elm).closest('li').attr('weibo-id'));
         } else if (this_elm.hasClass('more')) { //异步加载评论
-            comments.load(this_elm);
+            var comment = this_elm.attr('data-page');
+            var commentList = 0;
+            commentList = comment * 5;
+            var article_id = this_elm.attr('data-id');
+            $.ajax({
+                type: "POST",
+                url: "index.php?control=comment&action=getComment",
+                data: {
+                    article_id,
+                    commentList,
+                    comment
+                },
+                success: function(data) {
+                    data = $.parseJSON(data);
+                    if (data['status'] == 1) {
+                        this_elm.parent().parent().append(data['html']);
+                        this_elm.parent().remove();
+                    }
+                }
+            });
             return false;
         }
     })
@@ -95,16 +167,16 @@ $(function() {
         // console.log($user_id);
         touxiang_box.show(600);
         $.ajax({
-            url: "/public/whome/weibo/headSelect",
+            url: "index.php?control=weibo&action=headSelect",
             type: "POST",
             data: {
-                user_id:$user_id
+                $user_id
             },
             success: function(data) {
-
+                data = $.parseJSON(data);
                 let p_html = ""
                 data.forEach(item => {
-                    p_html += "<li class='photo_weibo'>" + item.weibo_content + "&nbsp;&nbsp;" + item.create_time + "</li>";
+                    p_html += "<li class='photo_weibo'>" + item.weibo_content + "&nbsp;&nbsp;" + item.time + "</li>";
 
                 })
                 $('.road_list').html(p_html);
@@ -126,16 +198,16 @@ $(function() {
             timer_enter = setTimeout(function() {touxiang_box.show(500).css("left",infoTarget.offset().left-385)},500);
             var tag_id = infoTarget.attr('data-id');
             $.ajax({
-    			url: "/public/whome/tag/tagSelect",
+    			url: "index.php?control=tag&action=tagSelect",
     			type: "POST",
     			data: {
     			     tag_id
     			 },
     			 success: function(data) {
-    			     //data = $.parseJSON(data);
+    			     data = $.parseJSON(data);
     			     let p_html = ""
     				 data.other.forEach(item=>{
-    				     p_html+= "<a href='/public/whome/tag/show',{id:"+tag_id+"}><li style='overflow:hidden;'>"+item.weibo_content+"</li></a>";
+    				     p_html+= "<a href='index.php?control=tag&action=info&id="+tag_id+"'><li style='overflow:hidden;'>"+item.weibo_content+"</li></a>";
     				 })
     				 infoTarget.siblings('.tag_info_box').find('.road_tag').html(p_html);
     			 }
@@ -159,11 +231,12 @@ $(function() {
     if (user.haslogin()) {
         $.ajax({
             type: "POST",
-            url: "/public/whome/user/check_local",
+            url: "index.php?control=user&action=check",
             data: {
                 id: localStorage.getItem('uid')
             },
             success: function(data) {
+                data = $.parseJSON(data);
                 if (data['status'] == 1) {
                     $('#accountmenu').html(data['html']);
                 }
@@ -185,7 +258,7 @@ $(function() {
     	    		tagname_arr.push($(this).val());
     	    		var _html = '';
     	    		for(var i = 0; i < tagname_arr.length; i ++) {
-    	    			_html += '<span>#'+tagname_arr[i]+'</span> ';
+    	    			_html += '#'+tagname_arr[i]+' ';
     	    		}
     	    		$(this).siblings('.tags').html(_html);
     	    		$(this).val('');
@@ -200,22 +273,15 @@ $(function() {
 	    		}
 	    		$(this).siblings('.tags').html(_html);
     		}
-    		$(this).siblings('.warning').css('display','none').html('最多添加5个标签');
+    		$(this).siblings('.warning').css('display','none');
     		$(this).val('');
     	}
-    })
-    $('.tags').on('click', 'span', function(e) {
-    	var this_elm = $(e.target);
-    	var _this = this_elm.html().replace('#','');
-    	var _index = $.inArray(_this, tagname_arr);
-    	tagname_arr.splice(_index, 1);
-    	this_elm.remove();
     })
     
     //修改个人信息
     $('#info-form').on('submit', function(e) {
-        e.preventDefault();
-        var _this = $(e.target).children();
+    	e.preventDefault();
+    	var _this = $(e.target).children();
     	user.change_info(_this);
     })
 })
@@ -245,5 +311,5 @@ function search_music(this_elm) {
 
 // 验证码改变
 function changeCaptcha (this_elm) {
-    $(this_elm).attr('src', '/public/index/home/getCaptcha?' + Math.random());
+    $(this_elm).attr('src', '../qing_weibo_tp5/public/index/home/getCaptcha?' + Math.random());
 }

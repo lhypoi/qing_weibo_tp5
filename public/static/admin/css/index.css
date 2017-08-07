@@ -17,10 +17,11 @@ ul, li {
   margin: 0;
   padding: 0;
   width: 100%;
-  /*background-color: #000;*/
+  background-color: #000;
   z-index: -1;
   position: absolute;
   top: 0px;
+  height: 100%;
 }
 .bg canvas {
   width: 100%;
@@ -169,7 +170,7 @@ ul, li {
   margin-top: 10px;
   margin-bottom: 15px;
 }
-.tab_user img.tab_pic {
+.tab_user img {
   height: 40px;
   width: 40px;
 }
@@ -254,10 +255,6 @@ ul, li {
 	height:30px;
 	line-height:30px;
 	text-indent:5px;
-}
-.tags span:hover{
-	text-decoration: line-through;
-	cursor: pointer;
 }
 #tag{
 	width:35%;
@@ -349,24 +346,4 @@ ul, li {
     position: relative;
     margin: 0 auto;
     color: #000;
-}
-
-/*ср╠ъ*/
-.admin{
-	width: 100%;
-	background-color: #fff;
-	padding: 10px 0;
-}
-.admin a{
-	width: 40%;
-	height: 30px;
-	line-height: 30px;
-	border: 1px solid #999;
-	border-radius: 5px;
-	display: block;
-	color: #333;
-	text-align: center;
-	cursor: pointer;
-	float: left;
-	margin-left: 10px;
 }
