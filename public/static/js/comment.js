@@ -17,11 +17,11 @@ window.comments={
                 }
             });
         }
-        $(this_elm).closest("li").find('.commont_box').slideToggle();
+        this_elm.closest("li").find('.commont_box').slideToggle();
 	},
 	
 	addComment:function(this_elm){
-		let weibo_id = $(this_elm).closest("li").attr('weibo-id');
+		let weibo_id = this_elm.closest("li").attr('weibo-id');
         if (!user.haslogin()) {
             alert('请先登陆');
         }else{
@@ -29,13 +29,13 @@ window.comments={
 	            url: "/public/whome/commont/addComment",
 	            type: "POST",
 	            data: {
-	                commet_content: $(this_elm).parent().prev().find('input').val(),
+	                commet_content: this_elm.parent().prev().find('input').val(),
 	                weibo_id
 	            },
 	            success: function(data) {
 	                if (data['status'] == 1) {
 	                    $('li[weibo-id=' + weibo_id + '] .commont_list').eq(0).prepend(data['html']);
-	                    $(this_elm).parent().prev().find('input').val('');
+	                    this_elm.parent().prev().find('input').val('');
 	                }
 	            }
 	        });
@@ -43,8 +43,8 @@ window.comments={
 	},
 	
 	edit:function(this_elm){
-		$('#edit_weibo_modal textarea').val($(this_elm).parent().parent().prev().text().trim());
-        $('#edit_weibo_modal input[type=hidden]').val($(this_elm).closest('li').attr('weibo-id'));
+		$('#edit_weibo_modal textarea').val(this_elm.parent().parent().prev().text().trim());
+        $('#edit_weibo_modal input[type=hidden]').val(this_elm.closest('li').attr('weibo-id'));
 	},
 	
 	load:function(this_elm){

@@ -46,30 +46,7 @@ $(function() {
         $('#tag').val('');
         $('.tags').eq(0).html('');
     })
-
-
-    // 更新微博
-    // 发布评论
-    // 删除评论
-
-    // 评论js对象封装
-    // let this_elm="";
-    // $('.weibo_list').click(function(event) {
-    //     this_elm = $(event.target);
-    //     // 评论下拉框
-    //     if (this_elm.hasClass('commet_btn')) {
-    //         comment.getComment(this_elm);
-
-    //     }else if (this_elm.hasClass('commet_send')) {
-    //         comment.addComment();
-    //     }else if (this_elm.hasClass('edit_weibo')) {
-    //         comment.edit()
-    //     } else if (this_elm.hasClass('more')) {
-    //         comment.load();
-    //     }
-    // })
-
-
+    
     // 事件委托绑定评论下拉框，评论增删功能，编辑微博
     $('.weibo_list').click(function(event) {
     	event.preventDefault();
@@ -208,7 +185,7 @@ $(function() {
     	    		tagname_arr.push($(this).val());
     	    		var _html = '';
     	    		for(var i = 0; i < tagname_arr.length; i ++) {
-    	    			_html += '#'+tagname_arr[i]+' ';
+    	    			_html += '<span>#'+tagname_arr[i]+'</span> ';
     	    		}
     	    		$(this).siblings('.tags').html(_html);
     	    		$(this).val('');
@@ -223,9 +200,16 @@ $(function() {
 	    		}
 	    		$(this).siblings('.tags').html(_html);
     		}
-    		$(this).siblings('.warning').css('display','none');
+    		$(this).siblings('.warning').css('display','none').html('最多添加5个标签');
     		$(this).val('');
     	}
+    })
+    $('.tags').on('click', 'span', function(e) {
+    	var this_elm = $(e.target);
+    	var _this = this_elm.html().replace('#','');
+    	var _index = $.inArray(_this, tagname_arr);
+    	tagname_arr.splice(_index, 1);
+    	this_elm.remove();
     })
     
     //修改个人信息
