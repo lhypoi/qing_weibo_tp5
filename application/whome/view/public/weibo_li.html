@@ -51,7 +51,7 @@
 			                </ul>
 			                <div class="arrow_down"></div>
 			            </div>
-		                <a data-id = "{$value.name}" class="tag" href="'/public/whome/tag/show',{id:$value.tag_id}">#{$value.name}&nbsp;</a>
+		                <a href="{:url('/whome/tag/show',array('id'=>$value.tag_id))}" data-id = "{$value.tag_id}" class="tag" >#{$value.name}&nbsp;</a>
 
 		            </div>
 		            {/foreach}

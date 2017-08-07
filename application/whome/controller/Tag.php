@@ -6,10 +6,11 @@ use think\Controller;
 class Tag extends Controller
 {
     public function show(){
-        $id=input('?get.id');
+        $id=input('id');
         $weibo_id=db("tagRelationship")->where('tag_id',$id)
             ->order("id DESC")
             ->select("weibo_id");
+//        var_dump($weibo_id);exit();
         $weibo_data = array();
         foreach ($weibo_id as $key=>$item)
         {
@@ -44,10 +45,10 @@ class Tag extends Controller
         $result = array();
         foreach ($weibo_id as $key => $value) {
 //            SELECT * FROM weibo_detail WHERE id = $weibo_id
-            $value = model("weibo")->where("id".$value['weibo_id'])->select();
-            $result.array_push($result, $value[0]);
+            $value = model("weibo")->where("id=".$value['weibo_id'])->select();
+            $result[]= $value[0];
         }
-        return ["status" => 1,'','', $result];
+        return $result;
     }
 
 }
