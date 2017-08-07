@@ -1,0 +1,31 @@
+<div class="row">
+    <span>用户名：</span>
+    <div class="form-box clearfix">
+        <input type="text" name="nickname" class="form-control text" value="{$item.user_nickname}" />
+        <b>昵称不能为空</b>
+    </div>
+</div>
+<div class="row">
+    <span>新密码：</span>
+    <div class="form-box clearfix">
+        <input type="password" name="pwd" class="form-control text" />
+        <b>密码不能为空</b>
+    </div>
+</div>
+<div class="row">
+    <span>确认密码：</span>
+    <div class="form-box clearfix">
+        <input type="password" name="pwd_confirm" class="form-control text" />
+        <b>密码不一致</b>
+    </div>
+</div>
+<div class="row">
+    <span>个人简介：</span>
+    <div class="form-box">
+        <textarea name="info" class="form-control text">{$item.brief}</textarea>
+    </div>
+</div>
+<div class="row">
+    <span></span>
+    <input type="submit" value="修改" class="btn btn-success button" />
+</div>

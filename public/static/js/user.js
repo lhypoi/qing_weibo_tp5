@@ -150,7 +150,7 @@ window.user = {
 		if(index == 2) {
 			$('#page-mark').attr('data-page','');
 			$.ajax({
-				url: "whome/user/getPhoto",
+				url: "/public/whome/user/getUserInfo",
 		        type: "POST",
 		        success: function(data) {
 		            if (data['status'] == 1) {
@@ -164,11 +164,13 @@ window.user = {
 		}else if(index == 1) {
 			$('#page-mark').attr('data-page','photo');
 			$.ajax({
-				url: "index.php?control=user&action=getPhoto",
+				url: "/public/whome/user/getPhoto",
 		        type: "POST",
-		        data: {photoList: 0},
+		        data: {
+				    photoList: 0,
+                    uid: $('.head_img_box').attr('data-id')
+                },
 		        success: function(data) {
-		            data = $.parseJSON(data);
 		            if (data['status'] == 1) {
 		                $('.photo_list').html(data['html']);
 		            }
@@ -221,7 +223,7 @@ window.user = {
 		}
 		if(send) {
 			$.ajax({
-				url: "index.php?control=user&action=changeInfo",
+				url: "/public/whome/user/changeInfo",
 		        type: "POST",
 		        data: {
 		        	nickname, 
@@ -229,7 +231,6 @@ window.user = {
 		        	info
 		        },
 		        success: function(data) {
-		            data = $.parseJSON(data);
 		            if (data['status'] == 1) {
 		                alert(data['msg']);
 		                location.reload();

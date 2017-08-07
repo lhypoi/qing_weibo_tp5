@@ -284,8 +284,8 @@ $(function() {
     
     //修改个人信息
     $('#info-form').on('submit', function(e) {
-    	e.preventDefault();
-    	var _this = $(e.target).children();
+        e.preventDefault();
+        var _this = $(e.target).children();
     	user.change_info(_this);
     })
 })

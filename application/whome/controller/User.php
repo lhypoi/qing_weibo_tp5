@@ -122,17 +122,66 @@ class User extends Controller
 
     //获取相册
     public function getPhoto() {
-        $pageStart = $_POST['photoList'];
-        $uid = $_SESSION['uid'];
+        $pageStart = input('photoList');
+        $uid = input('uid');
         $page = $pageStart.",9";
-        $weibo_model = $this->model("weibo");
-        $photo_list = $weibo_model->getPhotoList($uid, $page);
+        $photo_list = model('weibo')
+            ->field('id,pic')
+            ->where('user_id='.$uid.' and pic IS NOT NULL and pic != \'\'')
+            ->order('id desc')
+            ->page($page)
+            ->select();
         if(empty($photo_list)) {
-            returnjson(0, "无更多页面");
+            return [
+                "status"=>0,
+                "msg"=>"无更多页面"
+            ];
         }else {
             $this->assign("photo_list", $photo_list);
-            $html = $this->fetch("photo_li.html");
-            returnjson(1, "获取相册成功", $html, "", $photo_list);
+            $html = $this->fetch("public/photo_li");
+            return [
+                "status"=>1,
+                "msg"=>"获取相册成功",
+                "html"=>$html
+            ];
+
+        }
+    }
+
+    //获取个人信息
+    public function getUserInfo() {
+        $result = model('user')
+            ->field('*')
+            ->where('id='.Session::get('info')['id'])
+            ->find();
+        $this->assign("item", $result);
+        $html = $this->fetch("public/user_manage");
+        return [
+            "status"=>1,
+            "msg"=>"获取信息成功",
+            "html"=>$html
+        ];
+
+    }
+
+    //修改个人信息
+    public function changeInfo() {
+        $result = model('user')
+            ->where('id='.Session::get('info')['id'])
+            ->setField([
+                'user_nickname'=>input('nickname'),
+                'user_pwd'=>input('pwd'),
+                'brief'=>input('info')
+            ]);
+        $info = model('user')
+            ->where('id='.Session::get('info')['id'])
+            ->find();
+        if ($result == 1) {
+            Session::set("info", $info);
+            return [
+                "status" => 1,
+                "msg" => "修改成功"
+            ];
         }
     }
 }

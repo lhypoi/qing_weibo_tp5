@@ -10,7 +10,7 @@
     <script type="text/javascript" src="__PUBLIC__/js/user.js"></script>
     <script type="text/javascript" src="__PUBLIC__/js/weibo.js"></script>
     <script type="text/javascript" src="__PUBLIC__/js/comment.js"></script>
-    <script type="text/javascript" src="__PUBLIC__/js/index.js?0.0.2"></script>
+    <script type="text/javascript" src="__PUBLIC__/js/index.js?0.0.3"></script>
     <script type="text/javascript" src="__PUBLIC__/js/delete.js"></script>
 
     <link rel="stylesheet" type="text/css" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -24,7 +24,7 @@
         <!-- 头部 -->
         <div class="title">
             <!-- 标题 -->
-            <h1><a href="index.php" style="text-decoration: none;">轻博客</a></h1>
+            <h1><a href="/public" style="text-decoration: none;">轻博客</a></h1>
             <!-- 用户信息 -->
             <div class="tab_user clearfix">
                 <div class="dropdown user_state pull-left" id="accountmenu">
@@ -39,7 +39,7 @@
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="{:url('/whome/user/home',array('id'=>$Think.session.uid))}" data-toggle="modal">个人主页</a>
+                            <a href="{:url('/whome/user/home',array('id'=>$Think.session.info.id))}" data-toggle="modal">个人主页</a>
                         </li>
                         <li class="divider"></li>
                         <li>
