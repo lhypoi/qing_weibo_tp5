@@ -43,6 +43,8 @@ $(function() {
     $('.menu_box input[type=button]').click(function() {
     	weibo.submit_weibo(tagname_arr);
     	tagname_arr = [];
+        $('#tag').val('');
+        $('.tags').eq(0).html('');
     })
 
 
@@ -229,7 +231,7 @@ $(function() {
     //     $(".tag_info_box").hide()
     // })
 
-    判断是否是登陆状态
+    //判断是否是登陆状态
     if (user.haslogin()) {
         $.ajax({
             type: "POST",

@@ -150,10 +150,9 @@ window.user = {
 		if(index == 2) {
 			$('#page-mark').attr('data-page','');
 			$.ajax({
-				url: "index.php?control=user&action=getUserInfo",
+				url: "whome/user/getPhoto",
 		        type: "POST",
 		        success: function(data) {
-		            data = $.parseJSON(data);
 		            if (data['status'] == 1) {
 		                $('.info').html(data['html']);
 		            }

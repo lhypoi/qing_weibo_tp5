@@ -58,10 +58,10 @@
                 </div>
                 <div class="optb pull-right">
                     <span style="color: #55a4a9;">{$item.create_time}</span>
-                    {if $item.id == $Think.session.uid || $Think.session.admin}
+                    {if $item.user_id == $Think.session.info.id || $Think.session.admin}
                     <a href="#modal-del" data-toggle="modal" data-type="{$item.type}" class="delete_weibo" id="{$item.id}">删除</a>
                     {/if}
-                    {if $item.id == $Think.session.uid}
+                    {if $item.user_id == $Think.session.info.id}
                     <a href="#edit_weibo_modal" class="edit_weibo" data-toggle="modal">编辑</a>
                     {/if}
                     <a href="" class="commet_btn" data-num="{$item.id}">评论({$item.commont_count})</a>

@@ -7,7 +7,6 @@ window.weibo = {
 	str:"",
 	tof:"",
 	showHTML: function(data) {
-		data = $.parseJSON(data);
         if (data['status'] == 1) {
 			if(this.type == "short_content" || this.type == "pic_text" || this.type == "music") {
 				$('.weibo_box').prepend(data['html']);
@@ -36,7 +35,7 @@ window.weibo = {
 			$('.contentError').html("");
 			if(this.type == "video") {
 				$.ajax({
-		            url: "index.php?control=weibo&action=sendWeibo",
+		            url: "whome/weibo/sendWeibo",
 		            type: "POST",
 		            contentType: false,
 		            processData: false,
