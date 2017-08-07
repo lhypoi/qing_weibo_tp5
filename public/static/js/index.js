@@ -43,6 +43,8 @@ $(function() {
     $('.menu_box input[type=button]').click(function() {
     	weibo.submit_weibo(tagname_arr);
     	tagname_arr = [];
+        $('#tag').val('');
+        $('.tags').eq(0).html('');
     })
 
 

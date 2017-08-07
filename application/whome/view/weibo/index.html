@@ -1,4 +1,4 @@
-{include file='public/head'}
+﻿{include file='public/head'}
 <!-- 发布微博 -->
 <div class="weibo_content">
     <!-- 内容区域 -->
@@ -15,7 +15,6 @@
             <div class="pic_file_see"></div>
         </div>
         <div class="tab-pane fade" id="tab3">
-            {* <input type="file" id="music_file"> *}
             <input type="text" name="" class="search_music form-control" placeholder="���ø���ר��������������" oninput="search_music(this)">
             <ul class="search_list">
             </ul>
@@ -143,10 +142,10 @@
 					                </div>
 					                <div class="optb pull-right">
 					                    <span style="color: #55a4a9;">{$item.create_time}</span>
-					                    {if $item.id == $Think.session.uid || $Think.session.admin}
+					                    {if $item.user_id == $Think.session.info.id || $Think.session.admin}
 					                    <a href="#modal-del" data-toggle="modal" data-type="{$item.type}" class="delete_weibo" id="{$item.id}">删除</a>
 					                    {/if}
-					                    {if $item.id == $Think.session.uid}
+					                    {if $item.user_id == $Think.session.info.id}
 					                    <a href="#edit_weibo_modal" class="edit_weibo" data-toggle="modal">编辑</a>
 					                    {/if}
 					                    <a href="" class="commet_btn" data-num="{$item.id}">评论({$item.commont_count})</a>
