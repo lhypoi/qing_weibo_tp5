@@ -23,7 +23,6 @@ class Weibo extends Controller
                         ->select();
         }
         $this->assign("weibo_data", $weibo_list);
-        //print_r($weibo_list);
         return $this->fetch();
     }
     

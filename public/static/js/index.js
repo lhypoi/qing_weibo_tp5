@@ -67,6 +67,12 @@ $(function() {
         }
     })
 
+    // 管理本站按钮跳转
+    $('#manage_server').click(function () {
+        console.log(1);
+        location.href = $(this).attr('href');
+    });
+
     // 事件委托处理音乐搜索结果
     $('.search_list').click(function(event) {
         let this_elm = $(event.target);
