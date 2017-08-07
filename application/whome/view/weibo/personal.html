@@ -1,6 +1,6 @@
 {include file='public/head'}
 <link rel="stylesheet" type="text/css" href="__PUBLIC__/css/personal.css">
-<div class="head_img_box">
+<div class="head_img_box" data-id="{$user.id}">
     <div class="head_img">
         <a>
             <img src="{$user.user_pic|hasPhoto}" />
@@ -18,9 +18,14 @@
 <div class="menu">
     <ul class="clearfix">
         <input type="hidden" id="menu" value="0" />
+        {if $user.id == $Think.session.info.id}
         <li><span class="active" onclick="user.menu_select(0)">我的微博</span></li>
         <li><span onclick="user.menu_select(1)">我的相册</span></li>
         <li><span onclick="user.menu_select(2)">账号管理</span></li>
+        {else}
+        <li style="width: 50%"><span class="active" onclick="user.menu_select(0)">他的微博</span></li>
+        <li style="width: 50%"><span onclick="user.menu_select(1)">他的相册</span></li>
+        {/if}
     </ul>
 </div>
 <div class="weibo_list">
@@ -87,10 +92,10 @@
                                 </div>
                                 <div class="optb pull-right">
                                     <span style="color: #55a4a9;">{$item.create_time}</span>
-                                    {if $user.id == $Think.session.uid || $Think.session.admin}
+                                    {if $user.id == $Think.session.info.id || $Think.session.admin}
                                     <a href="#modal-del" data-toggle="modal" class="delete_weibo" id="{$item.id}">删除</a>
                                     {/if}
-                                    {if $user.id == $Think.session.uid}
+                                    {if $user.id == $Think.session.info.id}
                                     <a href="#edit_weibo_modal" class="edit_weibo" data-toggle="modal">编辑</a>
                                     {/if}
                                     <a href="" class="commet_btn" data-num="{$item.id}">评论({$item.commont_count})</a>
