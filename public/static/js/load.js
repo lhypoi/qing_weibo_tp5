@@ -38,10 +38,12 @@ $(function() {
 	    			user.photoList = user.photo_page * 9;
 	    			$.ajax({
 	    	    		type: "POST",
-	    	    		url: "index.php?control=user&action=getPhoto",
-	    	    		data: {photoList: user.photoList},
+	    	    		url: "/public/whome/user/getPhoto",
+	    	    		data: {
+	    	    			photoList: user.photoList, 
+	    	    			uid: $('.head_img_box').attr('data-id')
+	    	    		},
 	    	    		success: function(data) {
-	    	    			data = $.parseJSON(data);
 	    	                if (data['status'] == 1) {
 	    	                    $('.photo_list').eq(0).append(data['html']);
 	    	                    user.lock_photo = true;
