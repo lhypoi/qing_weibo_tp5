@@ -1,52 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <title>登陆页面</title>
-    <link rel="stylesheet" type="text/css" href="__PUBLIC_ADMIN__/libarary/Bootstrap3.3.7/css/bootstrap.min.css">
-    <script src="__PUBLIC_ADMIN__/js/jquery-3.1.0.min.js"></script>
-    <script src="__PUBLIC_ADMIN__/libarary/Bootstrap3.3.7/js/bootstrap.min.js"></script>
-    <style type="text/css" media="screen">
-        form{
-            width: 800px;
-            margin: 0 auto;
-        }
-    </style>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" type="text/css" href="__PUBLIC_ADMIN__/libarary/Bootstrap3.3.7/css/bootstrap.min.css">
+
+	<link rel="stylesheet" type="text/css" href="__PUBLIC_ADMIN__/libarary/Bootstrap3.3.7/js/bootstrap.min.js">
+	<style type="text/css">
+		.contanier{width: 60%;margin: 0 auto}
+	</style>
 </head>
 <body>
-    <form action="index_submit" method="post" accept-charset="utf-8">
-        <div class="form-group">
-            <label for="">用户名</label>
-            <input class="form-control" type="text" name="user_name"></input>
-        </div>
-        <div class="form-group">
-            <label for="">密码</label>
-            <input class="form-control" type="password" name="user_pwd"></input>
-        </div>
-        <div class="form-group">
-            <label for="">验证码</label>
-            <input class="form-control" type="text" name="user_captcha"></input>
-            <img src="{:captcha_src()}" alt="" onclick="change_captcha(this)">
-        </div>
-        <button type="submit" class="btn btn-default">登陆</button>
-    </form>
+	
+	<div class="contanier">
+			<form action="{:url('doLogin')}" class="form" method="post">
+				<div class="form-group">
+					<label >用户名</label>
+				 	<input type="text" name="admin_name" class="form-control">
+				</div>
+				<div class="form-group">
+					<label >密码</label>
+				 	<input type="password" name="admin_pwd" class="form-control">
+				</div>
+				<div class="form-group">
+					<label >验证码</label>
+				 	<input type="text" class="form-control" name="captach">
+				 	<img src="{:captcha_src()}" alt="" onclick="change_captach(this)">
+				</div>
+				<div class="form-group">
+					<input type="submit" class="btn btn-success" value="登录">
+				</div>
+			</form>
+
+	</div>
+ 
+	
+	<script type="text/javascript">
+			function change_captach (this_el) {
+				this_el.src='{:captcha_src()}?'+Math.random()
+			}
+	</script>
+
 </body>
-<script type="text/javascript">
-    // 验证码改变
-    function change_captcha (this_elm) {
-        $(this_elm).attr('src', '{:captcha_src()}?' + Math.random());
-    }
-    // 提交表单
-    $('button[type=submit]').click(function (e) {
-        event.preventDefault();
-        $.ajax({
-            url: "{:url('check_verify')}",
-            data:{code:$('input[name=user_captcha]').val()},
-            type:'post',
-            success:function (rtnData) {
-                console.log(rtnData);
-            }
-        });
-    });
-</script>
 </html>

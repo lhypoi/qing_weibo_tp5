@@ -163,16 +163,22 @@ class Weibo extends Controller
             // print_r($result);
             $file_path=$result[0]['pic'];
             // echo $file_path;exit();
-            unlink($root.$file_path);
+            if (file_exists($root.$file_path)) {
+                unlink($root.$file_path);
+            }
         }elseif ($type=='video') {
             $file_path=$result[0]['video'];
-            unlink($root.$file_path);
+            if (file_exists($root.$file_path)) {
+                unlink($root.$file_path);
+            }
         }elseif($type=='long_content'){
             $str=$result[0]['weibo_content'];
             preg_match_all('/<img.+src=\"\/?(.+\.(jpg|gif|bmp|bnp|png))\"?.+>/iU',$str,$match);
             foreach ($match[1] as $key => $value) {
                 $file_path=$root.$match[1][$key];
-                unlink($file_path);
+                if (file_exists($file_path)) {
+                    unlink($file_path);
+                }
             }
 
         }

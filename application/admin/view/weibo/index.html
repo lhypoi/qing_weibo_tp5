@@ -1,0 +1,92 @@
+{include file="public/header"}
+<h1>微博管理</h1>
+
+<table class="table">
+	<tr>
+		<th>ID</th>
+		<th>内容</th>
+		<th>发布时间</th>
+		<th>待定</th>
+		<th>操作</th>
+	</tr>
+
+	{foreach $weibo_list as $item}
+	<tr>
+		<td>{$item.id}</td>
+		<td><span onclick="textEdit(this,'weibo',{$item.id},'weibo_content')">{$item.weibo_content}</span></td>
+		<td>{$item.create_time|date="Y-m-d H:m:s",###}</td>
+		<td></td>
+		<td><a href="" class="btn btn-info">修改</a><a href="" class="btn btn-danger">删除</a></td>
+	</tr>
+	{/foreach}
+</table>
+<div>
+	{$weibo_list->render()}
+</div>
+<script type="text/javascript">
+	 // 对象观察watch 
+		function  textEdit(this_ele,control,id,field){
+			// 给当前节点创建一个输入框
+			// 当前节点是否有输入框 
+			var this_val = $(this_ele).html();
+			var input_id_name  = control+"_"+field+"_"+id;
+
+			if($("#"+input_id_name).length<=0){
+				// 第一步：创建节点
+				var new_input_ele = document.createElement("input");
+				// 第二步：为新的节点添加ID属性
+				new_input_ele.id = input_id_name;
+				// 第三步：为新的节点添加值
+				new_input_ele.value = this_val
+				// 把当前input节点变为jQuery对象
+				var input_ob = $(new_input_ele);
+
+				// 往td里面添加input节点
+				$(this_ele).parent().append(new_input_ele);
+
+				// 对焦
+				// console.log($("#control_"+id))
+				$("#"+input_id_name).focus() 
+				$(this_ele).hide();
+
+				// 给新节点通过jQuery监听失去焦点
+				input_ob.blur(function  () {
+					$(this_ele).show()
+					 $("#"+input_id_name).hide()
+					 // 这个值到底有没有被修改
+					 if (this_val == $(this).val() ) {
+					 	return false;
+					 }else{
+					 	 // 提交函数
+					 	 submitTextEdit (control,id,field,$(this).val())
+					 	 // 赋值新内容 
+					 	 $(this_ele).html($(this).val())
+
+					 }
+					// console.log(1)
+				})
+
+
+			}else{
+				$(this_ele).hide();
+				 $("#"+input_id_name).show().focus() 
+			}
+		}
+
+		/**
+		 * 提交内容
+		 * @param  {string} control 当前控制器名称
+		 * @param  {int} id      当前主键ID
+		 * @param  {string} field   被修改的字段名称
+		 * @param  {string/int} newV    字段新的内容
+		 * @return {int}         状态码
+		 */
+		function submitTextEdit (control,id,field,newV) {
+			 $.post("/public/admin/"+control+"/ajaxTextEdit",{id,field,newV},function  (rtnData) {
+			 	return rtnData.status;
+			 })
+		}
+ 
+
+</script>
+{include file="public/footer"}

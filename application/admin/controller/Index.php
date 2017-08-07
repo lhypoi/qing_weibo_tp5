@@ -1,13 +1,10 @@
 <?php
 namespace app\admin\controller;
 
-use think\Controller;
-class Index extends Controller
+class Index extends \think\Controller
 {
-    public function admin()
+    public function index()
     {
-        return $this->fetch();
+       return $this->fetch();
     }
 }
-
-?>
