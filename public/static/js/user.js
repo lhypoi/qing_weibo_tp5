@@ -164,7 +164,7 @@ window.user = {
 		}else if(index == 1) {
 			$('#page-mark').attr('data-page','photo');
 			$.ajax({
-				url: "index.php?control=user&action=getPhoto",
+				url: "/public/whome/user/getPhoto",
 		        type: "POST",
 		        data: {photoList: 0},
 		        success: function(data) {

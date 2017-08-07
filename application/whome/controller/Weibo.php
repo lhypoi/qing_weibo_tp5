@@ -33,7 +33,7 @@ class Weibo extends Controller
         $weibo_model = model("weibo");
         $weibo_data = array();
         $weibo_id = array();
-        if($page_mark == 'index') {
+        if($page_mark == 'index' || $page_mark == 'home') {
             $weibo_data = $weibo_model
                         ->field("weibo_detail.*, user.user_nickname, user.user_pic")
                         ->join("user", "user.id = weibo_detail.user_id")

@@ -17,7 +17,7 @@ $(function() {
 //	    			var id = getUrlParam('id');
 	    			$.ajax({
 	    	    		type: "POST",
-	    	    		url: "whome/weibo/get",
+	    	    		url: "/public/whome/weibo/get",
 	    	    		data: {page, page_mark},
 	    	    		success: function(data) {
 	    	                if (data['status'] == 1) {
