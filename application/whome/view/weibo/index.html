@@ -135,7 +135,7 @@
 								                </ul>
 								                <div class="arrow_down"></div>
 								            </div>
-							                <a href="{:url('/whome/tag/show',array('id'=>$value.tag_id))}" data-id = "{$value.tag_id}" class="tag">#{$value.name}&nbsp;</a>
+							                <a href="{:url('whome/tag/show',array('id'=>$value.tag_id))}" data-id = "{$value.tag_id}" class="tag">#{$value.name}&nbsp;</a>
 
 							            </div>
 							            {/foreach}
@@ -181,7 +181,7 @@
 			            </div>
 			            <div class="modal-footer">
 			                <button class="btn btn-default" data-dismiss="modal">取消</button>
-			                <button class="btn btn-info" onclick="do_edit_weibo()">确认</button>
+			                <button class="btn btn-info" onclick="user.do_edit_weibo()">确认</button>
 			                <input type="hidden" name="">
 			            </div>
 			        </div>

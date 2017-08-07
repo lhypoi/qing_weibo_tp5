@@ -7,11 +7,11 @@
                 <li weibo-id="{$item.id}" class="animated slideInDown list_{$item.id}">
                     <div class="row clearfix">
                         <div class="col-lg-2 head_box" style="text-align: center;">
-                            <img src="{$item.user_data.user_pic|hasPhoto}" alt="" data-id="{$item.user_id}" class="w_img">
-                            <p>{$item.user_data.user_nickname}</p>
+                            <img src="{$item.user_data[0]['user_pic']|hasPhoto}" alt="" data-id="{$item.user_id}" class="w_img">
+                            <p>{$item.user_data[0]['user_nickname']}</p>
                             <div class="info-box">
                                 <div class="arrow-left"></div>
-                                <a  class="author-name">{$item.user_data.user_nickname}的最近微博</a>
+                                <a  class="author-name">{$item.user_data[0]['user_nickname']}的最近微博</a>
 
                                 <ul class="road_list">
                                 </ul>
@@ -36,7 +36,7 @@
                             </div>
                             <div class="w-opt clearfix">
                                 <div class="optb pull-left">
-                                    {foreach $item.tag_data.tagid_arr as $key2=>$item2}
+                                    {foreach $item.tag_data[0] as $key2=>$item2}
                                     <div class="tags_box">
                                         <div class="tag_info_box">
                                             <ul class="road_tag clearfix">
@@ -57,11 +57,11 @@
                                     {/foreach}
                                 </div>
                                 <div class="optb pull-right">
-                                    <span style="color: #55a4a9;">{date('Y-m-d H:i:s', $item.create_time)}</span>
-                                    {if $item.user_data.id == $smarty.session.uid}
+                                    <span style="color: #55a4a9;">{$item.create_time}</span>
+                                    {if $item.user_data[0]['id'] == $Think.session.info.id || $Think.session.admin}
                                     <a href="#modal-del" data-toggle="modal" class="delete_weibo" id="{$item.id}">删除</a>
                                     {/if}
-                                    {if $item.user_data.id == $smarty.session.uid}
+                                    {if $item.user_data[0]['id'] == $Think.session.info.id}
                                     <a href="#edit_weibo_modal" class="edit_weibo" data-toggle="modal">编辑</a>
                                     {/if}
                                     <a href="" class="commet_btn" data-num="{$item.id}">评论({$item.commet_data})</a>

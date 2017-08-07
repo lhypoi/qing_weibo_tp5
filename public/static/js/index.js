@@ -135,7 +135,8 @@ $(function() {
     			     //data = $.parseJSON(data);
     			     let p_html = ""
     				 rdata.forEach(item=>{
-    				     p_html+= "<a href='/public/whome/tag/show',{id:"+tag_id+"}><li style='overflow:hidden;'>"+item.weibo_content+"</li></a>";
+                     //{:url('whome/tag/show',array('id'=>tag_id))}
+    				     p_html+= "<a href="{:url('whome/tag/show',array('id'=>tag_id))}"><li style='overflow:hidden;'>"+item.weibo_content+"</li></a>";
     				 })
     				 infoTarget.siblings('.tag_info_box').find('.road_tag').html(p_html);
     			 }

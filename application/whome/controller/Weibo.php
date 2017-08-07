@@ -161,18 +161,24 @@ class Weibo extends Controller
 //        var_dump($result[0]);exit();
         if($type=='pic_text'){
             // print_r($result);
-            $file_path=$result[0]['pic'];
-            // echo $file_path;exit();
-            unlink($root.$file_path);
+            $file_path=$root.$result[0]['pic'];
+
+            if(file_exists($file_path)){
+                unlink($file_path);
+            }
         }elseif ($type=='video') {
-            $file_path=$result[0]['video'];
-            unlink($root.$file_path);
+            $file_path=$root.$result[0]['video'];
+            if(file_exists($file_path)){
+                unlink($file_path);
+            }
         }elseif($type=='long_content'){
             $str=$result[0]['weibo_content'];
             preg_match_all('/<img.+src=\"\/?(.+\.(jpg|gif|bmp|bnp|png))\"?.+>/iU',$str,$match);
             foreach ($match[1] as $key => $value) {
                 $file_path=$root.$match[1][$key];
-                unlink($file_path);
+                if(file_exists($file_path)){
+                    unlink($file_path);
+                }
             }
 
         }
@@ -198,26 +204,29 @@ class Weibo extends Controller
                 db("tag_relationship")->where("id=".$value['id'])->delete();
             }
         }
-//        "select r.id from tag_relationship r inner join tag t on r.weibo_id = ".$weibo_id." and r.tag_id = t.id";
-//$tag_model->alias('t')
-//            ->join('tag_relationship r', 't.id=r.tag_id')
-//            ->field('*')
-//            ->where('r.weibo_id='.$item['id'])
-//            ->select();
-//        $tag_data=$this->model("tag")->getIdInRelation($weibo_id);
-//        if(!empty($tag_data)){
-//            foreach ($tag_data as $key => $value){
-//                $this->model("tag")->delTag($value['id']);
-//            }
-//        }
-
-//        $this->model("weibo")->delInfo($table,$weibo_id);
         model("weibo")->where("id=".$weibo_id)->delete();
 
         return [
             "status" => 1,
             "msg" => "微博删除成功"
         ];
+    }
+
+    public function editWeibo(){
+        $weibo_new_content=input('weibo_content');
+        $id=input('id');
+        $result=model('weibo')->where('id='.$id)->update(['weibo_content'=>$weibo_new_content]);
+        if ($result == 1) {
+            return [
+                "status" => 1,
+                "msg" => "编辑成功"
+            ];
+        } else {
+            return [
+                "status" => 0,
+                "msg" => "编辑失败"
+            ];
+        }
     }
 }
 

@@ -118,7 +118,7 @@ window.user = {
 	// 编辑文本类微博
 	do_edit_weibo: function() {
 	    $.ajax({
-	        url: "index.php?control=weibo&action=editWeibo",
+	        url: "/public/whome/weibo/editWeibo",
 	        type: "POST",
 	        data: {
 	            weibo_content: $('#edit_weibo_modal textarea').val(),
@@ -126,7 +126,6 @@ window.user = {
 	            type: 'edit'
 	        },
 	        success: function(data) {
-	            data = $.parseJSON(data);
 	            if (data['status'] == 1) {
 	                alert(data['msg']);
 	                location.reload();
