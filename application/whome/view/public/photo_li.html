@@ -1,0 +1,34 @@
+{foreach $photo_list as $item}
+<li>
+    <a href="index.php?control=weibo&action=getDetail&id={$item.id}">
+        <img src="{$item.pic}" />
+    </a>
+</li>
+{/foreach}
+<script type="text/javascript">
+    //调整相片大小
+    ajust();
+    function ajust() {
+        var photo_list = $('.photo_list li');
+        for(var i = 0; i < photo_list.length; i ++) {
+            var photo = photo_list.eq(i).children().children('img').eq(0);
+            var img = new Image();
+            img.src = photo.attr("src");
+            var width = img.width;
+            var height = img.height;
+            if((width - photo_list.eq(i).width()) > (height - photo_list.eq(i).height())) {
+                photo.css('height', '200px');
+                var rate = 200 / height;
+                photo.css('width', (width * rate) + 'px');
+                var margin = (width * rate - photo_list.eq(i).width()) / 2;
+                photo.css('margin-left', '-'+margin+'px');
+            } else {
+                photo.css('width', '225px');
+                var rate = 225 / width;
+                photo.css('height', (height * rate) + 'px');
+                var margin = (height * rate - photo_list.eq(i).height()) / 2;
+                photo.css('margin-top', '-'+margin+'px');
+            }
+        }
+    }
+</script>

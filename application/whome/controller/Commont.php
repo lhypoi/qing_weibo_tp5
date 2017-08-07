@@ -65,7 +65,7 @@ class Commont extends Controller
                 "status" => 1,
                 "msg" => "评论发送成功", 
                 "html" => $html,
-                "last" => $new_comment
+                "last" => $lastID
             ];
         }
     }
