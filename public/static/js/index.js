@@ -49,7 +49,7 @@ $(function() {
     
     // 事件委托绑定评论下拉框，评论增删功能，编辑微博
     $('.weibo_list').click(function(event) {
-    	event.preventDefault();
+    	//event.preventDefault();
         let this_elm = $(event.target);
         // 评论下拉框
         if (this_elm.hasClass('commet_btn')) {
@@ -142,7 +142,7 @@ $(function() {
     			     let p_html = ""
     				 rdata.forEach(item=>{
                      //{:url('whome/tag/show',array('id'=>tag_id))}
-    				     p_html+= "<a href="{:url('whome/tag/show',array('id'=>tag_id))}"><li style='overflow:hidden;'>"+item.weibo_content+"</li></a>";
+    				     p_html+= "<a href='/public/whome/tag/show/id/"+tag_id+"'><li style='overflow:hidden;'>"+item.weibo_content+"</li></a>";
     				 })
     				 infoTarget.siblings('.tag_info_box').find('.road_tag').html(p_html);
     			 }
